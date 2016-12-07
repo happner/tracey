@@ -6,7 +6,7 @@ Travis-like benchmarking framework. Special thanks to [Vadim Demedes](https://gi
 
 <h1 align="center">
   <br>
-  <img width="200" src="media/logo.png">
+  <img width="200" src="media/logo.jpg">
   <br>
   <br>
 </h1>
