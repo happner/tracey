@@ -39,3 +39,5 @@ jspm_packages
 test/keys
 test/temp
 test/reports
+test/logs
+test/queue
