@@ -33,8 +33,8 @@ benchmarket:
   password: 'doe' #benchmarket password
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
 node_js:
-  - 'stable'
-  - '0.12'
+  - '7'
+  - '6'
   - '0.10'
 repos:
   - name: 'tracey'

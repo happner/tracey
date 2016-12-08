@@ -1,0 +1,21 @@
+benchmarket:
+  name: 'tracey test' #human readable label for your environment
+  username: 'john' #benchmarket user
+  password: 'doe' #benchmarket password
+  api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
+node_js:
+  - '0.10'
+repos:
+  - name: 'tracey'
+    url: 'https://github.com/happner/tracey' #url to repo
+    key: 'YYTAAG4562fDSsa'
+    test_folder: './test'
+log_folder: './test/logs' #where our test logs go
+redis:
+    host: 'local'
+    port: '6379'
+notify:
+  recipients: ['johndoe@missingperson.org'] #errors and speed reduction recipients
+  threshold: 10 #percentage of decrease in overall speed to send out a warning email
+queue:
+    folder: './test/queue'
