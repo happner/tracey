@@ -20,7 +20,15 @@ service.on('started', function(message){
   console.log('Tracey is up and running...');
 
   if (repo){
-    service.services.queue.push({repo:repo});
+
+    service.services.queue.push({repo:repo}, function(e){
+
+      if (e){
+        return service.services.log.error('failed to push initial repo to queue', e);
+      }
+
+      return service.services.log.success('initial repo job pushed to queue');
+    });
   }
 });
 
@@ -35,6 +43,7 @@ commander
 
 var username = commander.option('u').username;
 var token = commander.option('t').token;
+
 repo = commander.option('r').repo;
 
 var config = require('./util/parse-config')(__dirname + path.sep + '.tracey.yml');
@@ -61,8 +70,6 @@ if (privateConfig){
 
 config.github.username = username;
 config.github.token = token;
-
-console.log('STARTING:::', JSON.stringify(config, null, 2));
 
 service.start(config);
 

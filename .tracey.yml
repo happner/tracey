@@ -20,17 +20,17 @@ github:
 repos:
   - owner: 'happner'
     name: 'tracey'
-    hookName: 'tracey_hook'
     test_folder: './test' #where in the repository the test folder is
 
-log_folder: './test/logs' #where our test logs go
+job:
+  folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
 
 notify:
   recipients: ['johndoe@missingperson.org'] #errors and speed reduction recipients
   threshold: 10 #percentage of decrease in overall speed to send out a warning email
 
 queue:
-    folder: './tracey_queue_folder'
+    folder: './tracey_queue_folder' #where our queue is built, in relation to index.js
 
 url: 'http://heathendigital.com/tracey/hooks' #where our github hooks are sending their payloads to
 
