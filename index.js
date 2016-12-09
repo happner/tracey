@@ -47,29 +47,19 @@ var token = commander.option('t').token;
 repo = commander.option('r').repo;
 
 var config = require('./util/parse-config')(__dirname + path.sep + '.tracey.yml');
+
+if (!config.github) config.github = {};
+
 var privateConfig;
 
-if (username && token){
+try{
+  privateConfig = require('./util/parse-config')(__dirname + path.sep + 'private/config.yml');
+}catch(e){
+  //do nothing
+}
 
-  if (!config.github) config.github = {};
-  if (!config.github.api) config.github.api = {};
-}
-else {
-  try{
-    privateConfig = require('./util/parse-config')(__dirname + path.sep + 'private/config.yml');
-  }catch(e){
-    //do nothing
-  }
-}
 //private overrides (tokens and the like)
-if (privateConfig){
-
-  username = privateConfig.username;
-  token = privateConfig.token;
-}
-
-config.github.username = username;
-config.github.token = token;
+if (privateConfig) config = require('merge').recursive(config, privateConfig);
 
 service.start(config);
 

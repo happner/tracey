@@ -8,14 +8,7 @@ node_js:
   - '0.10'
 
 github:
-  protocol: 'https'
-  host: 'api.github.com'
-  pathPrefix: '/api/v3'
-  headers:
-    user-agent: 'Happner Tracey'
-  Promise: 'bluebird'
-  followRedirects: false
-  timeout: 5000
+  token:
 
 repos:
   - owner: 'happner'
