@@ -41,3 +41,8 @@ test/temp
 test/reports
 test/logs
 test/queue
+
+private/config.yml
+
+
+tracey_queue_folder

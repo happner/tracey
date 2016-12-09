@@ -3,19 +3,35 @@ benchmarket:
   username: 'john' #benchmarket user
   password: 'doe' #benchmarket password
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
+
 node_js:
   - '0.10'
+
+github:
+  protocol: 'https'
+  host: 'api.github.com'
+  pathPrefix: '/api/v3'
+  headers:
+    user-agent: 'Happner Tracey'
+  Promise: 'bluebird'
+  followRedirects: false
+  timeout: 5000
+
 repos:
-  - name: 'tracey'
-    url: 'https://github.com/happner/tracey' #url to repo
-    key: 'YYTAAG4562fDSsa'
-    test_folder: './test'
+  - owner: 'happner'
+    name: 'tracey'
+    hookName: 'tracey_hook'
+    test_folder: './test' #where in the repository the test folder is
+
 log_folder: './test/logs' #where our test logs go
-redis:
-    host: 'local'
-    port: '6379'
+
 notify:
   recipients: ['johndoe@missingperson.org'] #errors and speed reduction recipients
   threshold: 10 #percentage of decrease in overall speed to send out a warning email
+
 queue:
-    folder: './test/queue'
+    folder: './tracey_queue_folder'
+
+url: 'http://heathendigital.com/tracey/hooks' #where our github hooks are sending their payloads to
+
+secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
