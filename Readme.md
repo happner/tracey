@@ -28,30 +28,39 @@ Given the following `.tracey.yml` file:
 
 ```yaml
 benchmarket:
-  name: 'test server 2' #human readable label for your environment
+  name: 'tracey test' #human readable label for your environment
   username: 'john' #benchmarket user
   password: 'doe' #benchmarket password
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
+
 node_js:
   - '7'
-  - '6'
   - '0.10'
+
+github:
+  token: #no token here - this is a public
+  secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
+
 repos:
-  - name: 'tracey'
-    url: 'https://github.com/happner/tracey' #url to repo
-    key: 'YYTAAG4562fDSsa'
-  - name: 'blahblah'
-    url: 'happner/blahblah' #url to repo, shorthand will prepend github.com
-    key: 'YYTAAG4562fDSsb' #key shared with github, so we dont have funny runs happening
-log_folder: './test/logs' #where our test logs go
-redis:
-    host: 'local'
-    port: '6379'
+  - owner: 'happner' #owner of repo
+    name: 'tracey' #name, combined to form the full name tracey/happner
+    test_script: 'npm test' #test script to run
+
+  - owner: 'happner'
+    name: 'another repo'
+    test_folder: './test' #folder where tests are
+
+job:
+  folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
+
 notify:
   recipients: ['johndoe@missingperson.org'] #errors and speed reduction recipients
   threshold: 10 #percentage of decrease in overall speed to send out a warning email
+
 queue:
-    folder: './test/queue'
+    folder: './tracey_queue_folder' #where our queue is built, in relation to index.js
+
+url: 'http://heathendigital.com/tracey/hooks' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 ```
 
 Run `tracey` in directory containing tracey.yml:

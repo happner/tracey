@@ -5,14 +5,16 @@ benchmarket:
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
 
 node_js:
+  - '7'
   - '0.10'
 
 github:
-  token:
+  token: #no token here - this is a public
+  secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
 
 repos:
-  - owner: 'happner'
-    name: 'tracey'
+  - owner: 'happner' #owner of repo
+    name: 'tracey' #name, combined to form the full name tracey/happner
     test_folder: './test' #where in the repository the test folder is
 
 job:
@@ -25,6 +27,5 @@ notify:
 queue:
     folder: './tracey_queue_folder' #where our queue is built, in relation to index.js
 
-url: 'http://heathendigital.com/tracey/hooks' #where our github hooks are sending their payloads to
+url: 'http://heathendigital.com/tracey/hooks' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 
-secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
