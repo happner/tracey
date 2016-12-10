@@ -4,10 +4,6 @@ benchmarket:
   password: 'doe' #benchmarket password
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
 
-node_js:
-  - '7'
-  - '0.10'
-
 github:
   token: #no token here - this is a public
   secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
@@ -15,7 +11,10 @@ github:
 repos:
   - owner: 'happner' #owner of repo
     name: 'tracey' #name, combined to form the full name tracey/happner
-    test_folder: './test' #where in the repository the test folder is
+    test_script: 'test-benchmarket' #configured test in npm
+    node_js:
+      - '7'
+      - '0.10'
 
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
