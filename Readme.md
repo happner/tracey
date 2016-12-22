@@ -97,6 +97,11 @@ $ tracey run [repo name] [-c [commit]]
 > average test timespan decreased by 12%, over the threshold, notifications sent
 
 ```
+##TODO
+
+- create linux service file
+- have tracey run all tests in a folder, as opposed to running a test script
+- sort out where the metrics go with new benchmarket
 
 ## License
 
