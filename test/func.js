@@ -2,13 +2,11 @@ describe('functional tests', function () {
 
   this.timeout(120000);
 
-  require('benchmarket').start();
-  after(require('benchmarket').store());
+  it('starts up the service, pops a job on the queue', function (done) {
 
-  xit('skipped', function (done) {
+
+    
     done();
   });
-
-  require('benchmarket').stop();
 
 });
