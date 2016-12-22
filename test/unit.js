@@ -2,13 +2,8 @@ describe('unit tests', function () {
 
   this.timeout(120000);
 
-  require('benchmarket').start();
-  after(require('benchmarket').store());
-
-  xit('skipped', function (done) {
+  it('tests the queue service, pushes a message in', function (done) {
     done();
   });
-
-  require('benchmarket').stop();
 
 });
