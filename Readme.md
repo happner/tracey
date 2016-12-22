@@ -101,7 +101,7 @@ $ tracey run [repo name] [-c [commit]]
 
 - create linux service file
 - have tracey run all tests in a folder, as opposed to running a test script
-- sort out where the metrics go with new benchmarket
+- sort out where the metrics go with new benchmarket, as a plugin
 
 ## License
 
