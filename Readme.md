@@ -1,6 +1,6 @@
 # Tracey [![Build Status](https://travis-ci.org/happner/tracey.svg?branch=master)](https://travis-ci.org/happner/tracey)
 
-[NB] THIS IS STILL CONCEPTUAL, WE ARE BUSY BUILDING IT, COME BACK IN ABOUT A MONTH OR SO.
+[NB] THIS IS STILL CONCEPTUAL, WE ARE BUSY BUILDING IT, COME BACK IN ABOUT A WEEK OR SO.
 
 Travis-like benchmarking framework. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based the framework on [Trevor](https://github.com/vadimdemedes/trevor).
 
@@ -78,7 +78,7 @@ $ tracey service stopped ok...
 
 Run latest repo by name:
 ```
-$ tracey run -r [repo name] [-c [commit]]
+$ tracey run [repo name] [-c [commit]]
 > pushed job to queue for repo blahblah, commit 5b30916447af4a56cab787e1ce120a613541f348
 > running test for repo blahblah, node version 0.10
 > ... mocha output ...

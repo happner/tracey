@@ -26,5 +26,5 @@ notify:
 queue:
     folder: './tracey_queue_folder' #where our queue is built, in relation to index.js
 
-url: 'http://heathendigital.com/tracey/hooks' #public url, that Tracey listens on, where our github hooks are sending their payloads to
+url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 

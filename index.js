@@ -61,6 +61,8 @@ try{
 //private overrides (tokens and the like)
 if (privateConfig) config = require('merge').recursive(config, privateConfig);
 
+console.log('HAVE CONFIG:::', config);
+
 service.start(config);
 
 
