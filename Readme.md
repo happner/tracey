@@ -63,7 +63,7 @@ queue:
 url: 'http://heathendigital.com/tracey/hooks' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 ```
 
-Run `tracey` in directory containing tracey.yml:
+Run `tracey` in directory containing tracey.yml and files:
 
 ```
 $ tracey start
