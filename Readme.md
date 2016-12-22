@@ -16,6 +16,8 @@ Travis-like benchmarking framework. Special thanks to [Vadim Demedes](https://gi
 
 Meant to run on a standalone purpose built box, Tracey exposes webhooks to github, based on tracey.yml, every time a check-in happens with github using [node-github-hook](https://github.com/nlf/node-github-hook), a run-job is enqueued using [file-queue](https://github.com/threez/file-queue) running in concurrency 1 mode, when the queued job is popped transactionally, the repository is downloaded and the tests for the repo are run, each in their own process using [happner-serial-mocha](https://github.com/happner/happner-serial-mocha). The length of time each test takes, with its suite is pushed to a database via [benchmarket](https://github.com/happner/benchmarket) for further scrutiny. It is by design that the system only runs 1 test at a time, so that there is as little concurrent noise as possible - which should give reasonably stable average metrics for test run times.
 
+Tracey is not designed to be a module, but is rather a fully fledged service that manages the benchmarking of your tests in a controlled environment.
+
 ## Installation
 
 ```
