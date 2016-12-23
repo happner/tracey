@@ -25,7 +25,7 @@ sm.runTasks(files, null, reportDir)
 .then(function(results){
   console.log('::::output results::::');
   console.log(results);
-  console.log('::::output results end::::');
+  console.log('::::output results::::');
 })
 
 .catch(function(e){
