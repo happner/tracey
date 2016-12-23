@@ -24,7 +24,7 @@ sm.runTasks(files, null, reportDir)
 //sm.runTasks(files, 'lib/serialReporter.js', true)
 .then(function(results){
   console.log('::::output results::::');
-  console.log(results);
+  console.log(JSON.stringify(results, null, 2));
   console.log('::::output results::::');
 })
 
