@@ -37,7 +37,7 @@
     "spawn-sync": "^1.0.15",
     "stable-node-version": "^1.0.0",
     "text-table": "^0.2.0",
-    "thompson": "0.0.4",
+    "thompson": "0.1.0",
     "uuid": "^3.0.1",
     "yamljs": "^0.2.4"
   },
