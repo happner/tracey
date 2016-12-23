@@ -11,7 +11,7 @@ github:
 repos:
   - owner: 'happner' #owner of repo
     name: 'tracey' #name, combined to form the full name tracey/happner
-    test_script: 'test-benchmarket' #configured test in npm
+    testFolder: './test' #folder containing tests to be benchmarked
     node_js:
       - '7'
       - '0.10'
