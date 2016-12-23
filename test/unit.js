@@ -41,7 +41,7 @@ describe('unit tests', function () {
 
   });
 
-  it.only('tests the runner', function (done) {
+  it.only('tests the runner and the test', function (done) {
 
     var runner = require('../lib/test/util/run');
 
@@ -52,6 +52,12 @@ describe('unit tests', function () {
     runner.on('error', function(data){
 
     })
+
+    var testContext = {};
+
+    var testLib = require('../lib/test/test');
+
+    testLib(testContext);
 
     done();
 
