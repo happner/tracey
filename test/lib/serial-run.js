@@ -19,14 +19,15 @@ var reportDir = path.resolve(__dirname, '../reports');
 
 console.log('running files::::', files);
 
-console.log('ushing to report dir::::', reportDir);
+console.log('to report::::', reportDir);
 
 sm.runTasks(files, null, reportDir)
 
-  .then(function(results){
-    console.log('tests completed, check the latest report file in ' + reportDir);
-  })
+//sm.runTasks(files, 'lib/serialReporter.js', true)
+.then(function(results){
+  console.log('ran files::::', results);
+})
 
-  .catch(function(e){
-    console.log('broke:::', e);
-  });
+.catch(function(e){
+  console.log('broke:::', e);
+});

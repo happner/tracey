@@ -104,6 +104,7 @@ $ tracey run [repo name] [-c [commit]]
 - sort out where the metrics go with new benchmarket, as a plugin
 - sort out tpop issue
 - create a non-docker version o fthe runner for ARM devices
+- bad path /usr/src/app/test/reports - need to change
 
 ## License
 
