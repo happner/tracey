@@ -27,7 +27,7 @@
     "fs-extra": "^1.0.0",
     "gitclone": "^2.0.0",
     "graceful-fs": "^4.1.11",
-    "happner-serial-mocha": "^1.4.0",
+    "happner-serial-mocha": "1.5.1",
     "log-update": "^1.0.1",
     "meow": "^3.4.2",
     "merge": "^1.2.0",

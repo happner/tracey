@@ -17,7 +17,9 @@ fs.readdirSync(testDir).forEach(function (filename) {
 
 var reportDir = path.resolve(__dirname, '../reports');
 
-sm.runTasks(files, true, true, reportDir)
+console.log('running files::::', files);
+
+sm.runTasks(files, null, reportDir)
 
   .then(function(results){
     console.log('tests completed, check the latest report file in ' + reportDir);
