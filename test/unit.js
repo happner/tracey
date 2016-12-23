@@ -41,6 +41,22 @@ describe('unit tests', function () {
 
   });
 
+  it.only('tests the runner', function (done) {
+
+    var runner = require('../lib/test/util/run');
+
+    runner.on('data', function(data){
+
+    })
+
+    runner.on('error', function(data){
+
+    })
+
+    done();
+
+  });
+
   it('starts up the queue service, emits a job', function (done) {
 
 
