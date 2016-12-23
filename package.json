@@ -41,6 +41,9 @@
     "uuid": "^3.0.1",
     "yamljs": "^0.2.4"
   },
+  "tracey":{
+    "testFolder":"./test"
+  },
   "files": [
     "index.js",
     "lib",
