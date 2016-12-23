@@ -14,9 +14,7 @@ if (!pack.tracey){
 
   if (!pack.tracey.testFolder) throw new Error('tracey configuration needs to specify a test folder');
 
-  if (path.isAbsolute(pack.tracey.testFolder)) testDir = pack.tracey.testFolder;
-
-  else testDir = path.resolve(__dirname, pack.tracey.testFolder);
+  testDir = path.resolve(__dirname, pack.tracey.testFolder);
 }
 
 var files = [];
