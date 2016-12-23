@@ -19,13 +19,13 @@ var reportDir = path.resolve(__dirname, '../reports');
 
 console.log('running files::::', files);
 
-console.log('to report::::', reportDir);
-
 sm.runTasks(files, null, reportDir)
 
 //sm.runTasks(files, 'lib/serialReporter.js', true)
 .then(function(results){
-  console.log('ran files::::', results);
+  console.log('::::output results::::');
+  console.log(results);
+  console.log('::::output results end::::');
 })
 
 .catch(function(e){
