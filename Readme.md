@@ -102,7 +102,7 @@ $ tracey run [repo name] [-c [commit]]
 - create linux service file
 - have tracey run all tests in a folder, as opposed to running a test script
 - sort out where the metrics go with new benchmarket, as a plugin
-- sort out tpop issue?
+- sort out tpop issue
 - create a non-docker version o fthe runner for ARM devices
 
 ## License
