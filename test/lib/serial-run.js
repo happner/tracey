@@ -19,6 +19,8 @@ var reportDir = path.resolve(__dirname, '../reports');
 
 console.log('running files::::', files);
 
+console.log('ushing to report dir::::', reportDir);
+
 sm.runTasks(files, null, reportDir)
 
   .then(function(results){
