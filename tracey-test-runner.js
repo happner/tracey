@@ -30,7 +30,8 @@ fs.readdirSync(testDir).forEach(function (filename) {
 var reportDir = testDir + path.sep + 'reports';
 
 sm.on('suite-ended', function(data){
-  console.log('::::suite-ended::::' + data.name);
+  console.log('::::suite-ended::::' + data.report.task);
+  console.log(data);
 });
 
 sm.runTasks(files, null, reportDir)
