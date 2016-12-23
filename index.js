@@ -17,7 +17,7 @@ service.on('error', function(message){
 
 service.on('started', function(message){
 
-  console.log('Tracey is up and running...');
+  service.services.log.success('tracey up and running..');
 
   if (repo){
 
@@ -60,8 +60,6 @@ try{
 
 //private overrides (tokens and the like)
 if (privateConfig) config = require('merge').recursive(config, privateConfig);
-
-console.log('HAVE CONFIG:::', config);
 
 service.start(config);
 

@@ -29,9 +29,12 @@ fs.readdirSync(testDir).forEach(function (filename) {
 
 var reportDir = testDir + path.sep + 'reports';
 
+sm.on('suite-ended', function(data){
+  console.log('::::suite-ended::::' + data.name);
+});
+
 sm.runTasks(files, null, reportDir)
 
-//sm.runTasks(files, 'lib/serialReporter.js', true)
 .then(function(results){
   //dont remove the ::::output results:::: tags, they are used to take out the test results json
   console.log('::::output results::::');
