@@ -63,6 +63,14 @@ describe('unit tests', function () {
 
   });
 
+  it.only('tests the runner and the test', function (done) {
+
+    var runner = require('../lib/test/runner');
+
+    done();
+  });
+
+
   it('starts up the queue service, emits a job', function (done) {
 
 
