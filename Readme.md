@@ -18,13 +18,7 @@ Meant to run on a standalone purpose built box, Tracey exposes webhooks to githu
 
 Tracey is not designed to be a module, but is rather a fully fledged service that manages the benchmarking of your tests in a controlled environment.
 
-## Installation
-
-```
-$ npm install tracey --global
-```
-
-## Usage
+## configuration file
 
 Given the following `.tracey.yml` file:
 
@@ -35,10 +29,6 @@ benchmarket:
   password: 'doe' #benchmarket password
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
 
-node_js:
-  - '7'
-  - '0.10'
-
 github:
   token: #no token here - this is a public
   secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
@@ -46,12 +36,16 @@ github:
 repos:
   - owner: 'happner' #owner of repo
     name: 'tracey' #name, combined to form the full name tracey/happner
-    test_script: 'npm test' #test script to run
-
-  - owner: 'happner'
-    name: 'another repo'
-    test_folder: './test' #folder where tests are
-
+    testFolder: './test' #folder containing tests to be benchmarked
+    node_js:
+      - '7'
+      - '0.10'
+  - owner: 'happner' #owner of repo
+    name: 'happner' #name, combined to form the full name tracey/happner
+    testFolder: './test' #folder containing tests to be benchmarked
+    node_js:
+      - '7'
+      - '0.10'
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
 
@@ -62,21 +56,134 @@ notify:
 queue:
     folder: './tracey_queue_folder' #where our queue is built, in relation to index.js
 
-url: 'http://heathendigital.com/tracey/hooks' #public url, that Tracey listens on, where our github hooks are sending their payloads to
+url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 ```
 
-Run `tracey` in directory containing tracey.yml and files:
+
+##installation
+*tracey is made to run on linux, installation instructions a la ubuntu:*
+```bash
+
+>sudo -s
+>apt-get update
+>apt-get install git build-essential -y
+
+# install nodejs
+# https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions (for updates to below)
+
+>curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+>apt-get install nodejs
+>node --version
+
+# install pm2
+
+>npm install pm2@latest -g
+
+# create user to run tracey as
+
+>adduser --disabled-password tracey
+
+# install tracey service (as user) (installing in /projects as preference)
+
+>cd /projects
+>git clone https://github.com/happner/tracey.git # this repo
+
+#change ownership to tracey
+>chown -R tracey ./tracey
+>cd tracey/
+>npm install
+
+#switch to tracey user
+>su tracey
+
+#create and modify 2 default tracey folders to allow for logging and queueing:
+
+>mkdir tracey_job_folder && chmod u+w tracey_job_folder
+>mkdir tracey_queue_folder && chmod u+w tracey_queue_folder
+
+#modify our tracey config file (SEE ABOVE)
+>vi .tracey.yml
+
+#vback to root session
+>exit
+
+#ensure tracey starts up on reboots
+>pm2 startup -u tracey
+
+#back to tracey user
+>su tracey
+
+#start pm2
+>pm2 start pm2.yml
+
+[PM2] Spawning PM2 daemon with pm2_home=/home/tracey/.pm2
+[PM2] PM2 Successfully daemonized
+[PM2][WARN] Applications index not running, starting...
+[PM2] App [index] launched (1 instances)
+┌──────────┬────┬─────────┬───────┬────────┬─────────┬────────┬─────┬───────────┬──────────┐
+│ App name │ id │ mode    │ pid   │ status │ restart │ uptime │ cpu │ mem       │ watching │
+├──────────┼────┼─────────┼───────┼────────┼─────────┼────────┼─────┼───────────┼──────────┤
+│ index    │ 0  │ cluster │ 10134 │ online │ 0       │ 0s     │ 14% │ 21.0 MB   │ enabled  │
+└──────────┴────┴─────────┴───────┴────────┴─────────┴────────┴─────┴───────────┴──────────┘
+
+#view pm2 logs to ensure we are started up and listening
+# the 0 matches what is found in the above PM2 response
+pm2 logs 0
+
+/home/tracey/.pm2/logs/index-out-0.log last 10 lines:
+0|index    | listening on:  {
+0|index    |   "host": "0.0.0.0",
+0|index    |   "port": 8080,
+0|index    |   "path": "/",
+0|index    |   "secret": "simon_webhook_secret_77652ghjstr"
+0|index    | }
+0|index    | listening for hook events on 0.0.0.0:8080
+0|index    | listening for event(s) on url [object Object]
+0|index    | started service: github
+0|index    | tracey up and running..
+
 
 ```
-$ tracey start
-$ tracey service running...
-```
 
-Stop service:
-```
-$ tracey stop
-$ tracey service stopped ok...
-```
+## configuration file
+
+Given the following `.tracey.yml` file:
+
+```yaml
+benchmarket:
+  name: 'tracey test' #human readable label for your environment
+  username: 'john' #benchmarket user
+  password: 'doe' #benchmarket password
+  api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
+
+github:
+  token: #no token here - this is a public
+  secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
+
+repos:
+  - owner: 'happner' #owner of repo
+    name: 'tracey' #name, combined to form the full name tracey/happner
+    testFolder: './test' #folder containing tests to be benchmarked
+    node_js:
+      - '7'
+      - '0.10'
+  - owner: 'happner' #owner of repo
+    name: 'happner' #name, combined to form the full name tracey/happner
+    testFolder: './test' #folder containing tests to be benchmarked
+    node_js:
+      - '7'
+      - '0.10'
+job:
+  folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
+
+notify:
+  recipients: ['johndoe@missingperson.org'] #errors and speed reduction recipients
+  threshold: 10 #percentage of decrease in overall speed to send out a warning email
+
+queue:
+    folder: './tracey_queue_folder' #where our queue is built, in relation to index.js
+
+url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 
 Run latest repo by name:
 ```
@@ -99,11 +206,8 @@ $ tracey run [repo name] [-c [commit]]
 ```
 ##TODO
 
-- create linux service file
-- have tracey run all tests in a folder, as opposed to running a test script
 - sort out where the metrics go with new benchmarket, as a plugin
 - create a non-docker version o fthe runner for ARM devices
-- bad path /usr/src/app/test/reports - need to change
 
 ## License
 
