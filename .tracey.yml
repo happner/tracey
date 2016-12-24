@@ -21,6 +21,12 @@ repos:
     node_js:
       - '7'
       - '0.10'
+  - owner: 'happner' #owner of repo
+    name: 'happner-2' #name, combined to form the full name tracey/happner
+    testFolder: './test' #folder containing tests to be benchmarked
+    node_js:
+      - '7'
+      - '0.10'
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
 
