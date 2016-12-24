@@ -60,8 +60,8 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 ```
 
 
-##installation
-*tracey is made to run on linux, installation instructions a la ubuntu:*
+##installation steps
+*tracey is made to run on linux, installation is a bit manual I'm afraid, installation instructions a la ubuntu:*
 ```bash
 
 >sudo -s
