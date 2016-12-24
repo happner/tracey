@@ -95,9 +95,9 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 
 # ensure our tracey user can use docker
 
->sudo gpasswd -a tracey docker
+>sudo usermod -aG docker tracey
 
-# install tracey service (as user) (installing in /projects as preference)
+# clone and install tracey service (installing in /projects as preference)
 
 >cd /projects
 >git clone https://github.com/happner/tracey.git # this repo
@@ -225,7 +225,7 @@ $ tracey run [repo name] [-c [commit]]
 
 - sort out where the metrics go with new benchmarket, as a plugin
 - create a non-docker version o fthe runner for ARM devices
-- issue with permissions on git clone?
+- issue with permissions on git clone
 ## License
 
 MIT © [Happner](https://github.com/happner)
