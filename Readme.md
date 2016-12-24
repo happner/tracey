@@ -21,7 +21,7 @@ Tracey is not designed to be a module, but is rather a fully fledged service tha
 *although tracey is made to run tests as throw-away items, she may be handling proprietry code, if you are testing private repos, make sure your tracey server is secure!*
 - tracey uses github tokens in her configuration to do things (access repos and webhooks) - the token is in the .tracey.yml file or could be an environment variable, as token can in some cases be as powerful as a github user - so take care
 - tracey also resets permissions on the tracey_job_folder and tracey_queue_folder to 777 - the entire repo is cloned to the job folder during a test run, and so if it is proprietory production code - be aware that anyone with access to the tracey server will be able to see the code.
-- the github hook listener does not listen on an SSL channel, and expects posts from github to be over normal http.
+- the github hook listener does not listen on an SSL channel, and expects posts from github to be over normal http. I would just use a domain with a [free cloudflare account](https://www.cloudflare.com/plans/) to remedy this.
 
 ## configuration file
 
@@ -63,12 +63,11 @@ queue:
 
 url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 ```
-
-
-##installation steps
-*tracey is made to run on linux, installation is a bit manual I'm afraid, installation instructions a la ubuntu:*
+*tracey is being configured to listen to push events on 2 repos: happner/tracey and happner/happner respectively, she will respond to posts to her external address 139.59.215.133:8080*
+##prerequisites
+- docker ([installation instructions](https://docs.docker.com/engine/installation/linux/ubuntulinux))
+- nodejs
 ```bash
-
 >sudo -s
 >apt-get update
 >apt-get install git build-essential -y
@@ -79,14 +78,24 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 >curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 >apt-get install nodejs
 >node --version
-
+```
+- pm2
+```bash
 # install pm2
-
 >npm install pm2@latest -g
+
+```
+##installation steps
+*tracey is made to run on linux, installation is a bit manual I'm afraid, installation instructions a la ubuntu:*
+```bash
 
 # create user to run tracey as
 
 >adduser --disabled-password tracey
+
+# ensure our tracey user can use docker
+
+>sudo gpasswd -a tracey docker
 
 # install tracey service (as user) (installing in /projects as preference)
 
