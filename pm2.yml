@@ -1,6 +1,5 @@
 apps:
   - script   : index.js
-    cwd : ./
     instances: 1
     watch  : true
     env    :
