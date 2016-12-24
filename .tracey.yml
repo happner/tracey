@@ -38,6 +38,7 @@ repos:
       testFolder: './test' #folder containing tests to be benchmarked
       node_js:
         - '7'
+
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
 
