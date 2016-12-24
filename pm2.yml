@@ -1,6 +1,7 @@
 apps:
-  - script   : index.js
+  - script   : "index.js"
+    name: "tracey"
     instances: 1
     watch  : true
     env    :
-      NODE_ENV: development
+      NODE_ENV: "development"
