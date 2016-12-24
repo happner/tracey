@@ -207,7 +207,7 @@ $ tracey run [repo name] [-c [commit]]
 
 - sort out where the metrics go with new benchmarket, as a plugin
 - create a non-docker version o fthe runner for ARM devices
-- issue with permissions on git clone?
+- issue with permissions on git clone
 ## License
 
 MIT © [Happner](https://github.com/happner)
