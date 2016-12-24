@@ -107,14 +107,16 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 #modify our tracey config file (SEE ABOVE)
 >vi .tracey.yml
 
+#still cannot get tracey to process without running as sudo, working on this
+
 #start pm2
->pm2 start pm2.yml
+>sudo pm2 start pm2.yml
 
 #save pm2
->pm2 ssave
+>sudo pm2 save
 
 #ensure tracey starts up on reboots
->pm2 startup
+>sudo pm2 startup
 
 [PM2] Spawning PM2 daemon with pm2_home=/home/tracey/.pm2
 [PM2] PM2 Successfully daemonized
