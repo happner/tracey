@@ -103,8 +103,8 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 
 #create and modify 2 default tracey folders to allow for logging and queueing:
 
->mkdir tracey_job_folder && chmod 777 tracey_job_folder
->mkdir tracey_queue_folder && chmod 777 tracey_queue_folder
+>mkdir tracey_job_folder && chown -R tracey tracey_job_folder && chmod 755 tracey_job_folder
+>mkdir tracey_queue_folder && chown -R tracey tracey_queue_folder && chmod 755 tracey_queue_folder
 
 #modify our tracey config file (SEE ABOVE)
 >vi .tracey.yml
