@@ -14,13 +14,35 @@ Travis-like benchmarking framework. Special thanks to [Vadim Demedes](https://gi
 
 ## Purpose
 
-Meant to run on a standalone purpose built box, Tracey exposes webhooks to github, based on tracey.yml, every time a check-in happens with github using [node-github-hook](https://github.com/nlf/node-github-hook), a run-job is enqueued using [file-queue](https://github.com/threez/file-queue) running in concurrency 1 mode, when the queued job is popped transactionally, the repository is downloaded and the tests for the repo are run, each in their own process using [happner-serial-mocha](https://github.com/happner/happner-serial-mocha). The length of time each test takes, with its suite is pushed to a database via [benchmarket](https://github.com/happner/benchmarket) for further scrutiny. It is by design that the system only runs 1 test at a time, so that there is as little concurrent noise as possible - which should give reasonably stable average metrics for test run times.
+Meant to run on a standalone purpose built box, Tracey exposes webhooks to github, based on tracey.yml, every time a check-in happens with github, using [thompson](https://github.com/happner/thompson) as the listener to events. Tracey then runs all the tests in the configured test directory of the repo, and stores metrics about how long each test took. The idea is for us to be able to analyse performance trends over time.
+
+## High level operation
+
+###thompson does the watching and pushes a job to the file queue
+When a matching event happens on github, and thompson alerts tracey about it, a run-job is enqueued using [file-queue](https://github.com/threez/file-queue) running in concurrency 1 mode
+
+###job is popped from the file-queue
+when the queued job is popped transactionally, it is assigned a test-run-id in the format [utc]_[guid], a test folder is created in the format ./tracey_job_folder/owner/repo/[test run id], the job is assigned its folder and is passed to the test runner.
+
+###repo cloned and test code is injected into cloned repo
+the repository is cloned, and [happner-serial-mocha](https://github.com/happner/happner-serial-mocha) is injected into the cloned app's dependancies, and then the [tracey-test-runner](https://github.com/happner/tracey/blob/master/tracey-test-runner.js) script is pushed to the cloned root.
+
+###docker then takes over
+A docker instance containing the repo, with the modified dependancies and tracey-test-runner and the configured nodejs version, is spun up and the tracey-test-runner script is executed inside the docker container, and produces a set of metrics about how long each test in the test folder took, broken down by file/suite/test. this data is outputted by the docker output, is pulled out by the tracey instance that kicked off docker and pushed into the test job folder.
+
+###benchmark metrics are pushed back to the job folder
+its metrics, with its suite and context will be pushed to a database via [benchmarket](https://github.com/happner/benchmarket) for further scrutiny.
+
+###one at a time
+It is by design that the system only runs 1 test at a time, so that there is as little concurrent noise as possible - which should give reasonably stable average metrics for test run times.
+
+###not a module, tracey is a service
 Tracey is not designed to be a module, but is rather a fully fledged service that manages the benchmarking of your tests in a controlled environment.
 
 ##Security considerations
 
 *although tracey is made to run tests as throw-away items, she may be handling proprietry code, if you are testing private repos, make sure your tracey server is secure!*
-- tracey uses github tokens in her configuration to do things (access repos and webhooks) - the token is in the .tracey.yml file or could be an environment variable, as token can in some cases be as powerful as a github user - so take care
+- tracey uses github tokens in her configuration to do things (access repos and webhooks) - the token is in the .tracey.yml file, as a token can in some cases be as powerful as a github user - take due precautions and look after your tokens.
 - tracey also resets permissions on the tracey_job_folder and tracey_queue_folder to 777 - the entire repo is cloned to the job folder during a test run, and so if it is proprietory production code - be aware that anyone with access to the tracey server will be able to see the code.
 - the github hook listener does not listen on an SSL channel, and expects posts from github to be over normal http. I would just use a domain with a [free cloudflare account](https://www.cloudflare.com/plans/) to remedy this.
 
@@ -145,71 +167,18 @@ pm2 logs 0
 0|index    | tracey up and running..
 
 ```
-
-## configuration file
-
-Given the following `.tracey.yml` file:
-
-```yaml
-benchmarket:
-  name: 'tracey test' #human readable label for your environment
-  username: 'john' #benchmarket user
-  password: 'doe' #benchmarket password
-  api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
-
-github:
-  token: #no token here - this is a public
-  secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
-
-repos:
-  - owner: 'happner' #owner of repo
-    name: 'tracey' #name, combined to form the full name tracey/happner
-    testFolder: './test' #folder containing tests to be benchmarked
-    node_js:
-      - '7'
-      - '0.10'
-  - owner: 'happner' #owner of repo
-    name: 'happner' #name, combined to form the full name tracey/happner
-    testFolder: './test' #folder containing tests to be benchmarked
-    node_js:
-      - '7'
-      - '0.10'
-job:
-  folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
-
-notify:
-  recipients: ['johndoe@missingperson.org'] #errors and speed reduction recipients
-  threshold: 10 #percentage of decrease in overall speed to send out a warning email
-
-queue:
-    folder: './tracey_queue_folder' #where our queue is built, in relation to index.js
-
-url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our github hooks are sending their payloads to
-
-Run latest repo by name:
-```
-$ tracey run [repo name] [-c [commit]]
-> pushed job to queue for repo blahblah, commit 5b30916447af4a56cab787e1ce120a613541f348
-> running test for repo blahblah, node version 0.10
-> ... mocha output ...
-
-> TEST RUN COMPLETE
-> -----------------
-
-> files:  19
->  L suites:  42
->    L tests:  74
->       L passed: 73
->       L failed: 1
-
-> average test timespan decreased by 12%, over the threshold, notifications sent
-
-```
 ##TODO
 
 - sort out where the metrics go with new benchmarket, as a plugin
-- create a non-docker version o fthe runner for ARM devices
+- create a non-docker version of the runner for ARM devices
 - issue with permissions on git clone, can only run the service as sudo?
+- have token ENV variables check on startup TRACEY_TOKEN
+- have tracey db and app on separate server, as happner-2 instance, for auth, webpage, events and analytics
+- tracey just runs a happner-2 client - and pushes data to tracey app (no noise)
+- have job folder in structure tracey_job_folder/[owner]/[repo]/[branch]/[run_id]
+- store the context with the metrics in tracey_job_folder/[owner]/[repo]/[branch]/[run_id]
+
+
 ## License
 
 MIT © [Happner](https://github.com/happner)
