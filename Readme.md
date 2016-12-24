@@ -95,11 +95,8 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 
 #change ownership to tracey
 >chown -R tracey ./tracey
->cd tracey/
+>cd tracey
 >npm install
-
-#switch to tracey user
->su tracey
 
 #create and modify 2 default tracey folders to allow for logging and queueing:
 
@@ -109,17 +106,20 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 #modify our tracey config file (SEE ABOVE)
 >vi .tracey.yml
 
-#vback to root session
->exit
-
-#ensure tracey starts up on reboots
->pm2 startup -u tracey
-
-#back to tracey user
+#switch to tracey user
 >su tracey
 
 #start pm2
 >pm2 start pm2.yml
+
+#save pm2
+>pm2 ssave
+
+#back to root user
+>exit
+
+#ensure tracey starts up on reboots
+>pm2 startup -u tracey
 
 [PM2] Spawning PM2 daemon with pm2_home=/home/tracey/.pm2
 [PM2] PM2 Successfully daemonized
@@ -130,6 +130,9 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 ├──────────┼────┼─────────┼───────┼────────┼─────────┼────────┼─────┼───────────┼──────────┤
 │ index    │ 0  │ cluster │ 10134 │ online │ 0       │ 0s     │ 14% │ 21.0 MB   │ enabled  │
 └──────────┴────┴─────────┴───────┴────────┴─────────┴────────┴─────┴───────────┴──────────┘
+
+#switch to tracey user
+>su tracey
 
 #view pm2 logs to ensure we are started up and listening
 # the 0 matches what is found in the above PM2 response
