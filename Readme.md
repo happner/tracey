@@ -1,6 +1,6 @@
 # Tracey [![Build Status](https://travis-ci.org/happner/tracey.svg?branch=master)](https://travis-ci.org/happner/tracey)
 
-[NB] THIS IS STILL CONCEPTUAL, WE ARE BUSY BUILDING IT, COME BACK IN ABOUT A WEEK OR SO.
+[NB] ALPHA, TRACEY IS NOT 100% RELIABLE YET.
 
 Travis-like benchmarking framework. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based the framework on [Trevor](https://github.com/vadimdemedes/trevor).
 
@@ -18,6 +18,7 @@ Meant to run on a standalone purpose built box, Tracey exposes webhooks to githu
 Tracey is not designed to be a module, but is rather a fully fledged service that manages the benchmarking of your tests in a controlled environment.
 
 ##Security considerations
+
 *although tracey is made to run tests as throw-away items, she may be handling proprietry code, if you are testing private repos, make sure your tracey server is secure!*
 - tracey uses github tokens in her configuration to do things (access repos and webhooks) - the token is in the .tracey.yml file or could be an environment variable, as token can in some cases be as powerful as a github user - so take care
 - tracey also resets permissions on the tracey_job_folder and tracey_queue_folder to 777 - the entire repo is cloned to the job folder during a test run, and so if it is proprietory production code - be aware that anyone with access to the tracey server will be able to see the code.
@@ -25,7 +26,8 @@ Tracey is not designed to be a module, but is rather a fully fledged service tha
 
 ## configuration file
 
-Given the following `.tracey.yml` file:
+The configuration file is in the tracey project, at the moment we configure repos we want to watch here, but will later on be storing the repos in a database. Given the following [.tracey.yml](https://github.com/happner/tracey/blob/master/.tracey.yml) file:
+*tracey is being configured to listen to push events on 2 repos: happner/tracey and happner/happner respectively, she will respond to posts to her external address 139.59.215.133:8080*
 
 ```yaml
 benchmarket:
@@ -63,7 +65,7 @@ queue:
 
 url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 ```
-*tracey is being configured to listen to push events on 2 repos: happner/tracey and happner/happner respectively, she will respond to posts to her external address 139.59.215.133:8080*
+
 ##prerequisites
 - docker ([installation instructions](https://docs.docker.com/engine/installation/linux/ubuntulinux))
 - nodejs
@@ -89,34 +91,21 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 *tracey is made to run on linux, installation is a bit manual I'm afraid, installation instructions a la ubuntu:*
 ```bash
 
-# create user to run tracey as
-
->adduser --disabled-password tracey
-
-# ensure our tracey user can use docker
-
->sudo usermod -aG docker tracey
-
 # clone and install tracey service (installing in /projects as preference)
 
 >cd /projects
 >git clone https://github.com/happner/tracey.git # this repo
 
-#change ownership to tracey
->chown -R tracey ./tracey
 >cd tracey
 >npm install
 
-#create and modify 2 default tracey folders to allow for logging and queueing:
+#create 2 default tracey folders to allow for logging and queueing:
 
->mkdir tracey_job_folder && chown -R tracey tracey_job_folder && chmod 755 tracey_job_folder
->mkdir tracey_queue_folder && chown -R tracey tracey_queue_folder && chmod 755 tracey_queue_folder
+>mkdir tracey_job_folder
+>mkdir tracey_queue_folder
 
 #modify our tracey config file (SEE ABOVE)
 >vi .tracey.yml
-
-#switch to tracey user
->su tracey
 
 #start pm2
 >pm2 start pm2.yml
@@ -124,11 +113,8 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 #save pm2
 >pm2 ssave
 
-#back to root user
->exit
-
 #ensure tracey starts up on reboots
->pm2 startup -u tracey
+>pm2 startup
 
 [PM2] Spawning PM2 daemon with pm2_home=/home/tracey/.pm2
 [PM2] PM2 Successfully daemonized
@@ -139,9 +125,6 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 ├──────────┼────┼─────────┼───────┼────────┼─────────┼────────┼─────┼───────────┼──────────┤
 │ index    │ 0  │ cluster │ 10134 │ online │ 0       │ 0s     │ 14% │ 21.0 MB   │ enabled  │
 └──────────┴────┴─────────┴───────┴────────┴─────────┴────────┴─────┴───────────┴──────────┘
-
-#switch to tracey user
->su tracey
 
 #view pm2 logs to ensure we are started up and listening
 # the 0 matches what is found in the above PM2 response
@@ -158,7 +141,6 @@ pm2 logs 0
 0|index    | listening for event(s) on url [object Object]
 0|index    | started service: github
 0|index    | tracey up and running..
-
 
 ```
 
@@ -225,7 +207,7 @@ $ tracey run [repo name] [-c [commit]]
 
 - sort out where the metrics go with new benchmarket, as a plugin
 - create a non-docker version o fthe runner for ARM devices
-- issue with permissions on git clone, can only run the service as sudo?
+- issue with permissions on git clone, can only run the service as sudo
 ## License
 
 MIT © [Happner](https://github.com/happner)
