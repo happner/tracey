@@ -1,4 +1,4 @@
-var ServiceManager = require('./lib/service')
+var ServiceManager = require('./lib/services/service')
   , path = require('path')
   , commander = require('commander')
   , path = require('path')
@@ -23,9 +23,7 @@ service.on('started', function(message){
 
     service.services.queue.push({repo:repo}, function(e){
 
-      if (e){
-        return service.services.log.error('failed to push initial repo to queue', e);
-      }
+      if (e) return service.services.log.error('failed to push initial repo to queue', e);
 
       return service.services.log.success('initial repo job pushed to queue');
     });
@@ -46,14 +44,14 @@ var token = commander.option('t').token;
 
 repo = commander.option('r').repo;
 
-var config = require('./util/parse-config')(__dirname + path.sep + '.tracey.yml');
+var config = require('./lib/util/parse-config')(__dirname + path.sep + '.tracey.yml');
 
 if (!config.github) config.github = {};
 
 var privateConfig;
 
 try{
-  privateConfig = require('./util/parse-config')(__dirname + path.sep + 'private/config.yml');
+  privateConfig = require('./lib/util/parse-config')(__dirname + path.sep + 'private/config.yml');
 }catch(e){
   //do nothing
 }

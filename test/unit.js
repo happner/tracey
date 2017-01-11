@@ -5,7 +5,7 @@ describe('unit tests', function () {
   it('starts up the queue service, emits a job', function (done) {
 
 
-    var QueueService = require('../lib/queue/service');
+    var QueueService = require('../lib/services/queue/service');
 
     var queueInstance = new QueueService();
 
@@ -41,21 +41,24 @@ describe('unit tests', function () {
 
   });
 
-  it.only('tests the runner and the test', function (done) {
+  xit('tests the runner and the test', function (done) {
 
-    var runner = require('../lib/test/util/run');
+    var runner = require('../lib/job_types/performance_tracker/util/run');
 
     runner.on('data', function(data){
 
-    })
+    });
 
     runner.on('error', function(data){
 
-    })
+    });
 
-    var testContext = {};
+    var testContext = {
+      name:'node',
+      version:'7'
+    };
 
-    var testLib = require('../lib/test/test');
+    var testLib = require('../lib/job_types/performance_tracker/test');
 
     testLib(testContext);
 
@@ -63,18 +66,11 @@ describe('unit tests', function () {
 
   });
 
-  it.only('tests the runner and the test', function (done) {
-
-    var runner = require('../lib/test/runner');
-
-    done();
-  });
-
 
   it('starts up the queue service, emits a job', function (done) {
 
 
-    var QueueService = require('../lib/queue/service');
+    var QueueService = require('../lib/services/queue/service');
 
     var queueInstance = new QueueService();
 
@@ -143,10 +139,9 @@ describe('unit tests', function () {
 
       queueInstance.push({'repo':'test/repo'}, function(){
         console.log('pushed test message');
+        done();
       });
-
     });
-
   });
 
 });
