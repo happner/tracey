@@ -1,0 +1,1 @@
+{"name":"repo","version":"0.0.1","description":"test package","license":"MIT","main":"index.js","repository":"https://github.com/owner/repo","scripts":{},"dependencies":{},"tracey":{"testFolder":"./test"},"devDependencies":{}}

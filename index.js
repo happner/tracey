@@ -5,6 +5,7 @@ var ServiceManager = require('./lib/services/service')
   ;
 
 var service = new ServiceManager();
+
 var repo;
 
 service.on('stopping', function(message){
@@ -40,6 +41,7 @@ commander
   .parse(process.argv);
 
 var username = commander.option('u').username;
+
 var token = commander.option('t').token;
 
 repo = commander.option('r').repo;

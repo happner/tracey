@@ -6,7 +6,7 @@ benchmarket:
 
 github:
   token: #no token here - this is a public
-  secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
+  secret: #our github secret, used for all endpoints
 
 #job type with settings in the privat efolder
 

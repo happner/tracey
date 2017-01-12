@@ -2,16 +2,75 @@ describe('unit tests', function () {
 
   this.timeout(120000);
 
+  var TestHelper = require('./lib/helper')
+    , path = require('path')
+    , expect = require('expect.js')
+    ;
+
+  it('tests the config parser', function (done) {
+
+    var projectRoot = path.resolve(__dirname, '..');
+
+    var config = require('../lib/util/parse-config')(projectRoot + path.sep + '.tracey.yml');
+
+    var privateConfig;
+
+    try{
+      privateConfig = require('../lib/util/parse-config')(projectRoot + path.sep + 'private/config.yml');
+    }catch(e){}
+
+
+    if (privateConfig) config = require('merge').recursive(config, privateConfig);
+
+    expect(config.repos != null).to.be(true);
+
+    console.log(config);
+
+    done();
+
+  });
+
+  it('tests the service manager', function (done) {
+
+    var projectRoot = path.resolve(__dirname, '..');
+
+    var config = require('../lib/util/parse-config')(projectRoot + path.sep + '.tracey.yml');
+
+    var privateConfig;
+
+    try{
+      privateConfig = require('../lib/util/parse-config')(projectRoot + path.sep + 'private/config.yml');
+    }catch(e){}
+
+
+    if (privateConfig) config = require('merge').recursive(config, privateConfig);
+
+    var ServiceManager = require('../lib/services/service');
+
+    var service = new ServiceManager();
+
+    service.on('started', function(message){
+
+      done();
+    });
+
+    service.start(config);
+
+  });
+
+  xit('starts up the tracey service, verifies configuration is good', function (done) {
+
+
+
+  });
+
   it('starts up the queue service, emits a job', function (done) {
-
-
+    
     var QueueService = require('../lib/services/queue/service');
 
     var queueInstance = new QueueService();
 
     queueInstance.on('message-popped', function(message){
-
-      //console.log('message-popped happened ', message);
 
       done();
     });
@@ -38,37 +97,128 @@ describe('unit tests', function () {
         }
       }
     );
-
   });
 
-  xit('tests the runner and the test', function (done) {
+  it('tests the runner and the test', function (done) {
 
-    var runner = require('../lib/job_types/performance_tracker/util/run');
+    var Runner = require('../lib/job_types/performance_tracker/runner');
 
-    runner.on('data', function(data){
+    var testHelper = new TestHelper();
 
+    var testPackage = {
+      "name": "repo",
+      "version": "0.0.1",
+      "description": "test package",
+      "license": "MIT",
+      "main": "index.js",
+      "repository": "https://github.com/owner/repo",
+      "scripts": {},
+      "dependencies": {},
+      "tracey":{
+        "testFolder":"./test"
+      },
+      "devDependencies": {}
+    };
+
+    var testPackagePaths = testHelper.createTempFile('package.json', JSON.stringify(testPackage), true);
+
+    var mockJob = {
+      message:{
+        repo:"owner/repo",
+        folder:testPackagePaths.folder,
+        config:{
+
+        },
+        event:{
+          owner:'owner',
+          repo:'repo'
+        },
+        job_type:{
+          settings:{
+            username:'joe',
+            password:'bloggs',
+            host:'https://128.0.0.1'
+          }
+        }
+      }
+    };
+
+    var runner = new Runner(mockJob);
+
+    var addStep = function(context, step){
+
+        if (context.stepsDone == null) context.stepsDone = [];
+
+        console.log('doing step:::', step);
+        context.stepsDone.push(step);
+    };
+
+    runner.internals.pullImage = function(context){
+      addStep(context, 'pullImage');
+
+      return new Promise(function (resolve, reject) {
+        resolve(context);
+      });
+    };
+
+    runner.internals.clean = function(context){
+      addStep(context, 'clean');
+
+      return new Promise(function (resolve, reject) {
+        resolve(context);
+      });
+    };
+
+    runner.internals.build = function(context){
+      addStep(context, 'build');
+
+      return new Promise(function (resolve, reject) {
+        resolve(context);
+      });
+    };
+
+    runner.internals.copy = function(src, dest){
+      return dest;
+    };
+
+    runner.internals.test = function(context){
+
+      addStep(context, 'test');
+
+      context.test_results = {
+
+      };
+
+      return new Promise(function (resolve, reject) {
+        resolve(context);
+      });
+    };
+
+    runner.internals.upload = function(context){
+      addStep(context, 'upload');
+
+      return new Promise(function (resolve, reject) {
+        resolve(context);
+      });
+    };
+
+    runner.on('test-progress', function(data){
+      console.log('test-progress:::', data.state);
+    });
+
+    runner.on('info', function(data){
+      console.log('info:::', data);
     });
 
     runner.on('error', function(data){
-
+      console.log('error:::', data);
     });
 
-    var testContext = {
-      name:'node',
-      version:'7'
-    };
-
-    var testLib = require('../lib/job_types/performance_tracker/test');
-
-    testLib(testContext);
-
-    done();
-
+    runner.start(done);
   });
 
 
   it('starts up the queue service, emits a job', function (done) {
-
 
     var QueueService = require('../lib/services/queue/service');
 
