@@ -42,6 +42,8 @@ test/reports
 test/logs
 test/queue
 
+temp
+
 private/config.yml
 
 tracey_queue_folder
