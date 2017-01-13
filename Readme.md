@@ -7,8 +7,10 @@ Tracey is a Github webhook framework, based on a configuration file, she is able
 JOB TYPES:
 ----------
 
-##perormance tracker:
-Out-of-the-box, Tracey comes with a performance_tracker job type, the performance_tracker injects a special test runner into the repo, the test runner will run all the tests in the repos test folder by default, or it can be configured to run certain tests. Each test suite is loaded into its own process and is run separately. Only 1 test suite is run at a time, and tracey only runs 1 job at a time - thus the performance tracker can collect metrics about test durations that are fairly uncluttered by other things occuring in parallel. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based this job_type on [Trevor](https://github.com/vadimdemedes/trevor).
+##performance tracker:
+*this is an internal module, and can be found in [/lib/job_types]()*
+
+The performance_tracker injects a special test runner into the repo, [happner-serial-mocha](https://github.com/happner/happner-serial-mocha) is injected into the cloned app's dependancies, and then the [tracey-test-runner](https://github.com/happner/tracey/blob/master/tracey-test-runner.js) script is pushed to the cloned root, the test runner will run all the tests in the repos test folder by default, or it can be configured to run certain tests. Each test suite is loaded into its own process and is run separately. Only 1 test suite is run at a time, and tracey only runs 1 job at a time - thus the performance tracker can collect metrics about test durations that are fairly uncluttered by other things occuring in parallel. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based this job_type on [Trevor](https://github.com/vadimdemedes/trevor).
 Performance metrics are sent to a statsd server, where they can be analysed using graphite. This is all done via the [test-metrics](https://github.com/happner/test-metrics) project.
 
 ###uses docker
@@ -39,7 +41,7 @@ When a matching event happens on github, and thompson alerts tracey about it, a 
 when the queued job is popped transactionally, it is assigned a test-run-id in the format [utc]_[guid], a test folder is created in the format ./tracey_job_folder/owner/repo/[test run id], the job is assigned its folder and is passed to the test runner.
 
 ###repo cloned
-the repository is cloned, and [happner-serial-mocha](https://github.com/happner/happner-serial-mocha) is injected into the cloned app's dependancies, and then the [tracey-test-runner](https://github.com/happner/tracey/blob/master/tracey-test-runner.js) script is pushed to the cloned root.
+the repository is cloned to a folder for the job, named as follows: [tracey_job_folder]/[repo owner]/[repo name]/[job id in format utc_guid]
 
 ###job_type plugin is initialised
 the plugin matching the configured job type is passed the job details (job folder containing the repo, with settings)
