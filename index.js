@@ -22,7 +22,15 @@ service.on('started', function(message){
 
   if (repo){
 
-    service.services.queue.push({repo:repo}, function(e){
+    var owner = repo.split('/')[0];
+    var name = repo.split('/')[1];
+    var branch = 'master';
+
+    var initialJob = {repo:repo, event:{owner:owner, name:name, branch:branch}};
+
+    console.log('about to queue:::', initialJob);
+
+    service.services.queue.push(initialJob, function(e){
 
       if (e) return service.services.log.error('failed to push initial repo to queue', e);
 
