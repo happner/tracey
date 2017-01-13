@@ -24,8 +24,6 @@ describe('unit tests', function () {
 
     expect(config.repos != null).to.be(true);
 
-    console.log(config);
-
     done();
 
   });
@@ -55,12 +53,6 @@ describe('unit tests', function () {
     });
 
     service.start(config);
-
-  });
-
-  xit('starts up the tracey service, verifies configuration is good', function (done) {
-
-
 
   });
 
