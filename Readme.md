@@ -1,32 +1,13 @@
 # Tracey [![Build Status](https://travis-ci.org/happner/tracey.svg?branch=master)](https://travis-ci.org/happner/tracey)
-
-[NB] ALPHA, TRACEY IS NOT 100% RELIABLE YET.
-
-Tracey is a Github webhook framework, based on a configuration file, she is able to create and listen on github webhooks, when she picks up a matching event she downloads the gthub repo and then runs a job based on a configured job_type. A job_type is essentially a plug-in that runs when Tracey picks up a github webhook event.
-
-JOB TYPES:
-----------
-
-##performance tracker:
-*this is an internal module, and can be found in [/lib/job_types]()*
-
-The performance_tracker injects a special test runner into the repo, [happner-serial-mocha](https://github.com/happner/happner-serial-mocha) is injected into the cloned app's dependancies, and then the [tracey-test-runner](https://github.com/happner/tracey/blob/master/tracey-test-runner.js) script is pushed to the cloned root, the test runner will run all the tests in the repos test folder by default, or it can be configured to run certain tests. Each test suite is loaded into its own process and is run separately. Only 1 test suite is run at a time, and tracey only runs 1 job at a time - thus the performance tracker can collect metrics about test durations that are fairly uncluttered by other things occuring in parallel. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based this job_type on [Trevor](https://github.com/vadimdemedes/trevor).
-Performance metrics are sent to a statsd server, where they can be analysed using graphite. This is all done via the [test-metrics](https://github.com/happner/test-metrics) project.
-
-###uses docker
-A docker instance containing the repo, with the modified dependancies and tracey-test-runner and the configured nodejs version, is spun up and the tracey-test-runner script is executed inside the docker container, and produces a set of metrics about how long each test in the test folder took, broken down by file/suite/test. this data is outputted by the docker output, is pulled out by the tracey instance that kicked off docker and pushed into the test job folder.
-
-###benchmark metrics are pushed to a test-metrics server
-its metrics, with its suite and context will be pushed to a database via [test-metrics](https://github.com/happner/test-metrics) for further scrutiny.
-
-
 <h1 align="center">
   <br>
   <img width="200" src="media/logo.png">
   <br>
   <br>
 </h1>
+[NB] ALPHA, TRACEY IS NOT 100% RELIABLE YET.
 
+Tracey is a Github webhook framework, based on a configuration file, she is able to create and listen on github webhooks, when she picks up a matching event she downloads the gthub repo and then runs a job based on a configured job_type. A job_type is essentially a plug-in that runs when Tracey picks up a github webhook event.
 
 ## Purpose
 
@@ -54,6 +35,22 @@ It is by design that the system only runs 1 test at a time, so that there is as 
 
 ###not a module, tracey is a service
 Tracey is not designed to be a module, but is rather a fully fledged service that manages the benchmarking of your tests in a controlled environment.
+
+JOB TYPES:
+----------
+
+##performance tracker:
+*this is an internal module, and can be found in [/lib/job_types]()*
+
+The performance_tracker injects a special test runner into the repo, [happner-serial-mocha](https://github.com/happner/happner-serial-mocha) is injected into the cloned app's dependancies, and then the [tracey-test-runner](https://github.com/happner/tracey/blob/master/tracey-test-runner.js) script is pushed to the cloned root, the test runner will run all the tests in the repos test folder by default, or it can be configured to run certain tests. Each test suite is loaded into its own process and is run separately. Only 1 test suite is run at a time, and tracey only runs 1 job at a time - thus the performance tracker can collect metrics about test durations that are fairly uncluttered by other things occuring in parallel. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based this job_type on [Trevor](https://github.com/vadimdemedes/trevor).
+Performance metrics are sent to a statsd server, where they can be analysed using graphite. This is all done via the [test-metrics](https://github.com/happner/test-metrics) project.
+
+###uses docker
+A docker instance containing the repo, with the modified dependancies and tracey-test-runner and the configured nodejs version, is spun up and the tracey-test-runner script is executed inside the docker container, and produces a set of metrics about how long each test in the test folder took, broken down by file/suite/test. this data is outputted by the docker output, is pulled out by the tracey instance that kicked off docker and pushed into the test job folder.
+
+###benchmark metrics are pushed to a test-metrics server
+its metrics, with its suite and context will be pushed to a database via [test-metrics](https://github.com/happner/test-metrics) for further scrutiny.
+
 
 ##Security considerations
 
@@ -188,6 +185,17 @@ pm2 logs 0
 0|index    | tracey up and running..
 
 ```
+
+##GOTCHAS
+
+- an initial run can happen on startup, by using the -r commandline argument, and specifying the repo name in the format owner/repo, for instance this is how I am testing tracey:
+```bash
+#in tracey root folder:
+node index.js -r happner/tracey
+```
+
+- for the performance_tracker test results are passed back from the docker instance using a starttag and endtag with [stdout pushes of the results object](https://github.com/happner/tracey/blob/master/tracey-test-runner.js#L41), these tags appear to be console.log comments, but are vital for getting the test results acorss from the docker instance.
+
 ##TODO
 
 - create a non-docker version of the runner for ARM devices

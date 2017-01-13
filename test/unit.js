@@ -255,8 +255,6 @@ describe('unit tests', function () {
 
       push:function(message, cb){
 
-        console.log('pushin message:::', message);
-
         this.tpopHandler.call(queueInstance
           , null
           , message
@@ -280,7 +278,6 @@ describe('unit tests', function () {
     queueInstance.listen(function(){
 
       queueInstance.push({'repo':'test/repo'}, function(){
-        console.log('pushed test message');
         done();
       });
     });
