@@ -15,44 +15,44 @@ Meant to run on a standalone purpose built box, Tracey exposes webhooks to githu
 
 ## High level operation
 
-###thompson does the watching and pushes a job to the file queue
+### thompson does the watching and pushes a job to the file queue
 When a matching event happens on github, and thompson alerts tracey about it, a run-job is enqueued using [file-queue](https://github.com/threez/file-queue) running in concurrency 1 mode
 
-###job is popped from the file-queue
+### job is popped from the file-queue
 when the queued job is popped transactionally, it is assigned a test-run-id in the format [utc]_[guid], a test folder is created in the format ./tracey_job_folder/owner/repo/[test run id], the job is assigned its folder and is passed to the test runner.
 
-###repo cloned
+### repo cloned
 the repository is cloned to a folder for the job, named as follows: [tracey_job_folder]/[repo owner]/[repo name]/[job id in format utc_guid]
 
-###job_type plugin is initialised
+### job_type plugin is initialised
 the plugin matching the configured job type is passed the job details (job folder containing the repo, with settings)
 
-###job_type plugin runs
+### job_type plugin runs
 the plugin runs, and the results are passed back to the job, tracey then commits the job
 
-###one at a time
+### one at a time
 It is by design that the system only runs 1 test at a time, so that there is as little concurrent noise as possible - which should give reasonably stable average metrics for test run times.
 
-###not a module, tracey is a service
+### not a module, tracey is a service
 Tracey is not designed to be a module, but is rather a fully fledged service that manages the benchmarking of your tests in a controlled environment.
 
 JOB TYPES:
 ----------
 
-##performance tracker:
+## performance tracker:
 *this is an internal module, and can be found in [/lib/job_types]()*
 
 The performance_tracker injects a special test runner into the repo, [happner-serial-mocha](https://github.com/happner/happner-serial-mocha) is injected into the cloned app's dependancies, and then the [tracey-test-runner](https://github.com/happner/tracey/blob/master/tracey-test-runner.js) script is pushed to the cloned root, the test runner will run all the tests in the repos test folder by default, or it can be configured to run certain tests. Each test suite is loaded into its own process and is run separately. Only 1 test suite is run at a time, and tracey only runs 1 job at a time - thus the performance tracker can collect metrics about test durations that are fairly uncluttered by other things occuring in parallel. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based this job_type on [Trevor](https://github.com/vadimdemedes/trevor).
 Performance metrics are sent to a statsd server, where they can be analysed using graphite. This is all done via the [test-metrics](https://github.com/happner/test-metrics) project.
 
-###uses docker
+### uses docker
 A docker instance containing the repo, with the modified dependancies and tracey-test-runner and the configured nodejs version, is spun up and the tracey-test-runner script is executed inside the docker container, and produces a set of metrics about how long each test in the test folder took, broken down by file/suite/test. this data is outputted by the docker output, is pulled out by the tracey instance that kicked off docker and pushed into the test job folder.
 
-###benchmark metrics are pushed to a test-metrics server
+### benchmark metrics are pushed to a test-metrics server
 its metrics, with its suite and context will be pushed to a database via [test-metrics](https://github.com/happner/test-metrics) for further scrutiny.
 
 
-##Security considerations
+## Security considerations
 
 *although tracey is made to run jobs for downloaded repos as throw-away items, she may be handling proprietry code, if you are testing private repos, make sure your tracey server is secure!*
 - tracey uses github tokens in her configuration to do things (access repos and webhooks) - the token is in the .tracey.yml file, as a token can in some cases be as powerful as a github user - take due precautions and look after your tokens.
@@ -106,7 +106,7 @@ queue:
 url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our github hooks are sending their payloads to
 ```
 
-##prerequisites
+## prerequisites
 - docker ([installation instructions](https://docs.docker.com/engine/installation/linux/ubuntulinux))
 - nodejs
 ```bash
@@ -127,7 +127,7 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 >npm install pm2@latest -g
 
 ```
-##installation steps
+## installation steps
 *tracey is made to run on linux, installation is a bit manual I'm afraid, installation instructions a la ubuntu:*
 ```bash
 
@@ -139,7 +139,7 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 >cd tracey
 >npm install
 
-#create 2 default tracey folders to allow for logging and queueing:
+# create 2 default tracey folders to allow for logging and queueing:
 
 >mkdir tracey_job_folder
 >mkdir tracey_queue_folder
@@ -147,15 +147,15 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 #modify our tracey config file (SEE ABOVE)
 >vi .tracey.yml
 
-#still cannot get tracey to process without running as sudo, working on this
+# still cannot get tracey to process without running as sudo, working on this
 
-#start pm2
+# start pm2
 >sudo pm2 start pm2.yml
 
-#save pm2
+# save pm2
 >sudo pm2 save
 
-#ensure tracey starts up on reboots
+# ensure tracey starts up on reboots
 >sudo pm2 startup
 
 [PM2] Spawning PM2 daemon with pm2_home=/home/tracey/.pm2
@@ -168,7 +168,7 @@ url: 'http://139.59.215.133:8080' #public url, that Tracey listens on, where our
 │ index    │ 0  │ cluster │ 10134 │ online │ 0       │ 0s     │ 14% │ 21.0 MB   │ enabled  │
 └──────────┴────┴─────────┴───────┴────────┴─────────┴────────┴─────┴───────────┴──────────┘
 
-#view pm2 logs to ensure we are started up and listening
+# view pm2 logs to ensure we are started up and listening
 # the 0 matches what is found in the above PM2 response
 pm2 logs 0
 
@@ -186,17 +186,17 @@ pm2 logs 0
 
 ```
 
-##GOTCHAS
+## GOTCHAS
 
 - an initial run can happen on startup, by using the -r commandline argument, and specifying the repo name in the format owner/repo, for instance this is how I am testing tracey:
 ```bash
-#in tracey root folder:
+# in tracey root folder:
 node index.js -r happner/tracey
 ```
 
 - for the performance_tracker test results are passed back from the docker instance using a starttag and endtag with [stdout pushes of the results object](https://github.com/happner/tracey/blob/master/tracey-test-runner.js#L41), these tags appear to be console.log comments, but are vital for getting the test results acorss from the docker instance.
 
-##TODO
+## TODO
 
 - create a non-docker version of the runner for ARM devices
 - issue with permissions on git clone, can only run the service as sudo?
