@@ -1,3 +1,0 @@
-describe('functional tests', function () {
-  
-});

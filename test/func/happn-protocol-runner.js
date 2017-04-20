@@ -14,8 +14,6 @@ describe('func - happn-protocol job-runner', function () {
             var configPath = path.join(__dirname, '..', path.sep, 'lib', 'happn-protocol.yml');
             this.__config = yaml.parse(fs.readFileSync(configPath, 'utf-8'));
 
-            //this.__config = require('../../lib/happn-protocol.yml');
-
             var ServiceManager = require('../../lib/services/service');
             this.__serviceManager = new ServiceManager();
 
@@ -28,15 +26,32 @@ describe('func - happn-protocol job-runner', function () {
 
         context('start', function () {
 
-            it('successfully starts the ServiceManager', function (done) {
+            it('webhook successfully receives a Github push event and adds it to the queue', function (done) {
 
-                try{
+                var self = this;
+
+                var mockMessage = {
+                    event: "push",
+                    name: "happn-protocol",
+                    owner: "happner",
+                    branch: "master",
+                    detail: ""
+                };
+
+                try {
                     this.__serviceManager.start(this.__config);
 
-                    setTimeout(function(){
-                        done();
-                    }, 30000)
-                }catch(e){
+                    setTimeout(function () {
+
+                        // shortcut the event
+                        self.__serviceManager.services['github'].__handleGithubEvent(mockMessage);
+
+                        setTimeout(function () {
+                            done();
+                        }, 10000);
+
+                    }, 5000)
+                } catch (e) {
                     return done(e);
                 }
             });
