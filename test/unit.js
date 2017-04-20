@@ -13,6 +13,8 @@ describe('unit tests', function () {
 
     var config = require('../lib/util/parse-config')(projectRoot + path.sep + '.tracey.yml');
 
+    console.log(config);
+
     var privateConfig;
 
     try{

@@ -39,7 +39,8 @@
     "thompson": "0.1.0",
     "uuid": "^3.0.1",
     "yamljs": "^0.2.4",
-    "test-metrics":"happner/test-metrics"
+    "test-metrics": "happner/test-metrics",
+    "tracey-job-modules": "https://github.com/team-tenacious/tracey-job-modules.git"
   },
   "tracey": {
     "testFolder": "./test"
@@ -58,8 +59,9 @@
   },
   "devDependencies": {
     "eslint-config-vdemedes": "*",
-    "xo": "sindresorhus/xo",
+    "expect.js": "^0.3.1",
     "mocha": "^2.2.4",
-    "expect.js": "^0.3.1"
+    "path": "^0.12.7",
+    "xo": "sindresorhus/xo"
   }
 }

@@ -56,6 +56,8 @@ repo = commander.option('r').repo;
 
 var config = require('./lib/util/parse-config')(__dirname + path.sep + '.tracey.yml');
 
+console.log(config);
+
 if (!config.github) config.github = {};
 
 var privateConfig;

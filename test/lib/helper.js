@@ -21,4 +21,11 @@ TestHelper.prototype.createTempFile = function(filename, contents, randomFolder)
   return {file:filePath, folder:folderPath};
 };
 
+TestHelper.prototype.generateHappnProtocolRunnerConfig = function(){
+  return {
+
+  };
+};
+
+
 module.exports = TestHelper;

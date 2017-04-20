@@ -5,8 +5,8 @@ benchmarket:
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
 
 github:
-  token: #no token here - this is a public
-  secret: #our github secret, used for all endpoints
+  token: 'sdasdasd' #no token here - this is a public
+  secret: 'ssdasdsad' #our github secret, used for all endpoints
 
 #job type with settings in the privat efolder
 
