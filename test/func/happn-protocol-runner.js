@@ -5,7 +5,7 @@ var yaml = require('yamljs');
 
 describe('func - happn-protocol job-runner', function () {
 
-    this.timeout(60000);
+    this.timeout(120000);
 
     context('', function () {
 
@@ -43,12 +43,12 @@ describe('func - happn-protocol job-runner', function () {
 
                     setTimeout(function () {
 
-                        // shortcut the event
+                        // shortcut the event by invoking the handler directly
                         self.__serviceManager.services['github'].__handleGithubEvent(mockMessage);
 
                         setTimeout(function () {
                             done();
-                        }, 10000);
+                        }, 100000);
 
                     }, 5000)
                 } catch (e) {
