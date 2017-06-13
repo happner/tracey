@@ -1,7 +1,6 @@
 var ServiceManager = require('./lib/services/service')
   , path = require('path')
   , commander = require('commander')
-  , path = require('path')
   ;
 
 var service = new ServiceManager();

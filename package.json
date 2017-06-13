@@ -40,7 +40,7 @@
     "uuid": "^3.0.1",
     "yamljs": "^0.2.4",
     "test-metrics": "happner/test-metrics",
-    "tracey-job-modules": "https://github.com/team-tenacious/tracey-job-modules.git#performance-tracker-lite"
+    "tracey-job-modules": "https://github.com/team-tenacious/tracey-job-modules.git"
   },
   "tracey": {
     "testFolder": "./test"
