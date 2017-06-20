@@ -17,7 +17,7 @@ repos:
     node_js:
       - '7'
       - '0.10'
-    job_type: 'performance_tracker'
+    job_type: 'performance-tracker-lite'
 
   - owner: 'happner' #owner of repo
     name: 'happner' #name, combined to form the full name tracey/happner
@@ -25,7 +25,7 @@ repos:
     node_js:
       - '7'
       - '0.10'
-    job_type: 'performance_tracker'
+    job_type: 'performance-tracker-lite'
 
   - owner: 'happner' #owner of repo
     name: 'happner-2' #name, combined to form the full name tracey/happner
@@ -33,7 +33,7 @@ repos:
     node_js:
       - '7'
       - '0.10'
-    job_type: 'performance_tracker'
+    job_type: 'performance-tracker-lite'
 
   - owner: 'happner' #owner of repo
     name: 'happn-3' #name, combined to form the full name tracey/happner
@@ -41,14 +41,14 @@ repos:
     node_js:
       - '7'
       - '0.10'
-    job_type: 'performance_tracker'
+    job_type: 'performance-tracker-lite'
 
   - owner: 'happner' #owner of repo
     name: 'thompson' #name, combined to form the full name tracey/happner
     testFolder: './test' #folder containing tests to be benchmarked
     node_js:
       - '7'
-    job_type: 'performance_tracker'
+    job_type: 'performance-tracker-lite'
 
   - owner: 'happner' #owner of repo
     name: 'happn' #name, combined to form the full name tracey/happner
@@ -56,7 +56,7 @@ repos:
     node_js:
       - '7'
       - '0.10'
-    job_type: 'performance_tracker'
+    job_type: 'performance-tracker-lite'
 
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
