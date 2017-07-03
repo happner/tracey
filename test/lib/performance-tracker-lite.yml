@@ -1,6 +1,11 @@
 job_types:
   - name: 'performance-tracker-lite' #built in job_type
     path: './lib/job_types/performance-tracker-lite/runner' #what gets required
+    settings:
+          username: 'joe'
+          password: 'bloggs'
+          host: '0.0.0.0'
+
 github:
   token: '' #no token here - this is a public
   secret: '' #our github secret, used for all endpoints
