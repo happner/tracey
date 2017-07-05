@@ -5,7 +5,7 @@ var yaml = require('yamljs');
 
 describe('func - performance-tracker-lite job-runner', function () {
 
-    this.timeout(120000);
+    this.timeout(1000000);
 
     context('', function () {
 
@@ -48,7 +48,7 @@ describe('func - performance-tracker-lite job-runner', function () {
 
                         setTimeout(function () {
                             done();
-                        }, 100000);
+                        }, 900000);
 
                     }, 5000)
                 } catch (e) {
