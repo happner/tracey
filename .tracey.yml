@@ -4,11 +4,11 @@ benchmarket:
   password: 'doe' #benchmarket password
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
 
-github:
-  token: 'sdasdasd' #no token here - this is a public
-  secret: 'ssdasdsad' #our github secret, used for all endpoints
+#github:
+#  token: '' #no token here - this is a public
+#  secret: '' #our github secret, used for all endpoints
 
-#job type with settings in the privat efolder
+#job type with settings in the private folder
 
 repos:
   - owner: 'happner' #owner of repo
