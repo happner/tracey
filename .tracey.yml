@@ -57,6 +57,8 @@ repos:
       - '7'
       - '0.10'
     job_type: 'performance-tracker-lite'
+    schedule: '00 00 00 * * 1-5'  # midnight, weekdays (pattern: seconds | minute | hour | day of month | month | day of week)
+
 
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
