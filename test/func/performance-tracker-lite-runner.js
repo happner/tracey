@@ -2,6 +2,7 @@ var expect = require('expect.js');
 var path = require('path');
 var fs = require('fs');
 var yaml = require('yamljs');
+var moment = require('moment');
 
 describe('func - performance-tracker-lite job-runner', function () {
 
@@ -51,6 +52,24 @@ describe('func - performance-tracker-lite job-runner', function () {
                         }, 900000);
 
                     }, 5000)
+                } catch (e) {
+                    return done(e);
+                }
+            });
+
+            it('cron schedule runs and adds job to the queue', function (done) {
+
+                var self = this;
+
+                //schedule pattern: (seconds) (minute) (hour) (day of month) (month) (day of week)
+                self.__config.repos[0].schedule = moment().add(10, 'seconds').format('ss mm hh') + ' * * *';
+
+                try {
+                    this.__serviceManager.start(this.__config);
+
+                    setTimeout(function () {
+                        done();
+                    }, 900000)
                 } catch (e) {
                     return done(e);
                 }
