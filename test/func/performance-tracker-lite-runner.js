@@ -62,7 +62,7 @@ describe('func - performance-tracker-lite job-runner', function () {
                 var self = this;
 
                 //schedule pattern: (seconds) (minute) (hour) (day of month) (month) (day of week)
-                self.__config.repos[0].schedule = moment().add(10, 'seconds').format('ss mm hh') + ' * * *';
+                self.__config.repos[0].schedule = moment().add(20, 'seconds').format('ss mm HH') + ' * * *';
 
                 try {
                     this.__serviceManager.start(this.__config);

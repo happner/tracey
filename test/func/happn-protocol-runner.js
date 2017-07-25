@@ -2,10 +2,11 @@ var expect = require('expect.js');
 var path = require('path');
 var fs = require('fs');
 var yaml = require('yamljs');
+var moment = require('moment');
 
 describe('func - happn-protocol job-runner', function () {
 
-    this.timeout(120000);
+    this.timeout(1000000);
 
     context('', function () {
 
@@ -48,9 +49,26 @@ describe('func - happn-protocol job-runner', function () {
 
                         setTimeout(function () {
                             done();
-                        }, 100000);
+                        }, 900000);
 
                     }, 5000)
+                } catch (e) {
+                    return done(e);
+                }
+            });
+
+            it('schedule successfully creates happn-protocol job adds it to the queue', function (done) {
+
+                var self = this;
+
+                self.__config.repos[0].schedule = moment().add(20, 'seconds').format('ss mm HH') + ' * * *';
+
+                try {
+                    this.__serviceManager.start(this.__config);
+
+                    setTimeout(function () {
+                        done();
+                    }, 900000);
                 } catch (e) {
                     return done(e);
                 }
