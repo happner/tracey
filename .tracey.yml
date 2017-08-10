@@ -24,6 +24,7 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 00 00 * * *'  # pattern: seconds | minute | hour | day of month | month | day of week
+    artifact_path: './artifacts/tracey'
 
   - owner: 'happner'
     name: 'happner'
@@ -33,6 +34,7 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 05 00 * * *'
+    artifact_path: './artifacts/happner'
 
   - owner: 'happner'
     name: 'happner-2'
@@ -42,6 +44,7 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 10 00 * * *'
+    artifact_path: './artifacts/happner-2'
 
   - owner: 'happner'
     name: 'happn-3'
@@ -51,6 +54,7 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 20 00 * * *'
+    artifact_path: './artifacts/happn-3'
 
   - owner: 'happner'
     name: 'thompson'
@@ -68,6 +72,7 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 40 00 * * *'
+    artifact_path: './artifacts/happn'
 
   - owner: 'happner'
     name: 'happner-cluster'
@@ -77,6 +82,7 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 50 00 * * *'
+    artifact_path: './artifacts/happner-cluster'
 
   #############################
   # protocol documentation jobs
