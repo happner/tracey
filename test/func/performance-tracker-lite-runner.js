@@ -27,35 +27,35 @@ describe('func - performance-tracker-lite job-runner', function () {
 
         context('start', function () {
 
-            it('webhook successfully receives a Github push event and adds it to the queue', function (done) {
-
-                var self = this;
-
-                var mockMessage = {
-                    event: "push",
-                    name: "happn",
-                    owner: "happner",
-                    branch: "master",
-                    detail: ""
-                };
-
-                try {
-                    this.__serviceManager.start(this.__config);
-
-                    setTimeout(function () {
-
-                        // shortcut the event by invoking the handler directly
-                        self.__serviceManager.services['github'].__handleGithubEvent(mockMessage);
-
-                        setTimeout(function () {
-                            done();
-                        }, 900000);
-
-                    }, 5000)
-                } catch (e) {
-                    return done(e);
-                }
-            });
+            //it('webhook successfully receives a Github push event and adds it to the queue', function (done) {
+            //
+            //    var self = this;
+            //
+            //    var mockMessage = {
+            //        event: "push",
+            //        name: "happn",
+            //        owner: "happner",
+            //        branch: "master",
+            //        detail: ""
+            //    };
+            //
+            //    try {
+            //        this.__serviceManager.start(this.__config);
+            //
+            //        setTimeout(function () {
+            //
+            //            // shortcut the event by invoking the handler directly
+            //            self.__serviceManager.services['github'].__handleGithubEvent(mockMessage);
+            //
+            //            setTimeout(function () {
+            //                done();
+            //            }, 900000);
+            //
+            //        }, 5000)
+            //    } catch (e) {
+            //        return done(e);
+            //    }
+            //});
 
             it('cron schedule runs and adds job to the queue', function (done) {
 

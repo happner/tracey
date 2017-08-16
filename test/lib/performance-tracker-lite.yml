@@ -17,6 +17,13 @@ repos:
       - '7'
     testFolder: './test'
     job_type: 'performance-tracker-lite' #matching defined job type above
+    artifacts:
+      folder: './artifacts/happn'
+      index: './artifacts/artifact_hashes.txt'
+      ipfs:
+        host: '127.0.0.1'
+        port: '5001'
+      upload: true
 
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js

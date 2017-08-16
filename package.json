@@ -27,6 +27,7 @@
     "gitclone": "^2.0.0",
     "graceful-fs": "^4.1.11",
     "happner-serial-mocha": "1.5.2",
+    "ipfs-mini": "^1.1.2",
     "log-update": "^1.0.1",
     "meow": "^3.4.2",
     "merge": "^1.2.0",
@@ -40,7 +41,7 @@
     "test-metrics": "happner/test-metrics",
     "text-table": "^0.2.0",
     "thompson": "0.1.0",
-    "tracey-job-modules": "https://github.com/team-tenacious/tracey-job-modules.git",
+    "tracey-job-modules": "https://github.com/team-tenacious/tracey-job-modules.git#ipfs-archive",
     "uuid": "^3.0.1",
     "yamljs": "^0.2.4"
   },

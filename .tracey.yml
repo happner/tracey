@@ -24,7 +24,13 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 00 00 * * *'  # pattern: seconds | minute | hour | day of month | month | day of week
-    artifact_path: './artifacts/tracey'
+    artifacts:
+      folder: './artifacts/happn'
+      index: './artifacts/artifact_hashes.txt'
+      ipfs:
+        host: '127.0.0.1'
+        port: '5001'
+      upload: true
 
   - owner: 'happner'
     name: 'happner'
