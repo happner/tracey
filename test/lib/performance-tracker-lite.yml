@@ -19,7 +19,7 @@ repos:
     job_type: 'performance-tracker-lite' #matching defined job type above
     artifacts:
       folder: './artifacts/happn'
-      index: './artifacts/artifact_hashes.txt'
+      index: 'artifact_hashes.txt'
       ipfs:
         host: '127.0.0.1'
         port: '5001'
