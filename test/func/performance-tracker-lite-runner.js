@@ -15,6 +15,14 @@ describe('func - performance-tracker-lite job-runner', function () {
             var configPath = path.join(__dirname, '..', path.sep, 'lib', 'performance-tracker-lite.yml');
             this.__config = yaml.parse(fs.readFileSync(configPath, 'utf-8'));
 
+            this.__config.job_types[0].settings.hostname = process.env['GRAPHITE_HOST'];
+            this.__config.job_types[0].settings.username = process.env['GRAPHITE_USER'];
+            this.__config.job_types[0].settings.password = process.env['GRAPHITE_PASSWORD'];
+
+            this.__config.github.user.token = process.env['GITHUB_TOKEN'];
+            this.__config.github.user.email = process.env['GITHUB_EMAIL'];
+            this.__config.github.user.name = process.env['GITHUB_NAME'];
+
             var ServiceManager = require('../../lib/services/service');
             this.__serviceManager = new ServiceManager();
 

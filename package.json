@@ -41,7 +41,7 @@
     "test-metrics": "happner/test-metrics",
     "text-table": "^0.2.0",
     "thompson": "0.1.0",
-    "tracey-job-modules": "https://github.com/team-tenacious/tracey-job-modules.git#ipfs-archive",
+    "tracey-job-modules": "https://github.com/team-tenacious/tracey-job-modules.git",
     "uuid": "^3.0.1",
     "yamljs": "^0.2.4"
   },

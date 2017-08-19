@@ -1,9 +1,13 @@
 job_types:
   - name: 'happner-protocol' #built in job_type
     path: './lib/job_types/happner-protocol/runner' #what gets required
+
 github:
-  token: '' #no token here - this is a public
-  secret: '' #our github secret, used for all endpoints
+  user:
+    name: '[replaced from env vars]'
+    email: '[replaced from env vars]'
+    token: '[replaced from env vars]'
+    secret: '1234' #our github secret, used for all endpoints
 
 repos:
   - owner: 'happner' #owner of repo
