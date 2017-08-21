@@ -6,7 +6,7 @@ var moment = require('moment');
 
 describe('func - performance-tracker-lite job-runner', function () {
 
-    this.timeout(1000000);
+    this.timeout(2000000);
 
     context('', function () {
 
@@ -19,6 +19,8 @@ describe('func - performance-tracker-lite job-runner', function () {
             this.__config.job_types[0].settings.username = process.env['GRAPHITE_USER'];
             this.__config.job_types[0].settings.password = process.env['GRAPHITE_PASSWORD'];
 
+            this.__config.repos[0].artifacts.ipfs.host = process.env['IPFS_HOST'];
+
             this.__config.github.user.token = process.env['GITHUB_TOKEN'];
             this.__config.github.user.email = process.env['GITHUB_EMAIL'];
             this.__config.github.user.name = process.env['GITHUB_NAME'];
@@ -29,9 +31,9 @@ describe('func - performance-tracker-lite job-runner', function () {
             done();
         });
 
-        afterEach('stop', function (done) {
-            done();
-        });
+        //afterEach('stop', function (done) {
+        //    done();
+        //});
 
         context('start', function () {
 
@@ -76,8 +78,9 @@ describe('func - performance-tracker-lite job-runner', function () {
                     this.__serviceManager.start(this.__config);
 
                     setTimeout(function () {
+                        console.log('Session timed out');
                         done();
-                    }, 900000)
+                    }, 1800000)
                 } catch (e) {
                     return done(e);
                 }

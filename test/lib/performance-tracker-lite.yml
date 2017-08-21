@@ -24,7 +24,7 @@ repos:
       folder: './artifacts/happn'
       index: 'artifact_hashes.txt'
       ipfs:
-        host: '127.0.0.1'
+        host: '[replaced_from env vars]'
         port: '5001'
       upload: true
 
