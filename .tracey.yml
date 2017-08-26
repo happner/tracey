@@ -4,10 +4,6 @@ benchmarket:
   password: 'doe' #benchmarket password
   api_key: '9c572bf0-eca1-4247-8bef-d1df51d42239' #benchmarket key
 
-#github:
-#  token: '' #no token here - this is a public
-#  secret: '' #our github secret, used for all endpoints
-
 #job type with settings in the private folder
 
 repos:
@@ -33,13 +29,6 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 05 00 * * *'
-    artifacts:
-      folder: './artifacts/happner'
-      index: 'artifact_hashes.txt'
-      ipfs:
-        host: '127.0.0.1'
-        port: '5001'
-      upload: true
 
   - owner: 'happner'
     name: 'happner-2'
@@ -49,13 +38,6 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 10 00 * * *'
-    artifacts:
-      folder: './artifacts/happner-2'
-      index: 'artifact_hashes.txt'
-      ipfs:
-        host: '127.0.0.1'
-        port: '5001'
-      upload: true
 
   - owner: 'happner'
     name: 'happn-3'
@@ -65,13 +47,6 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 20 00 * * *'
-    artifacts:
-      folder: './artifacts/happn-3'
-      index: 'artifact_hashes.txt'
-      ipfs:
-        host: '127.0.0.1'
-        port: '5001'
-      upload: true
 
   - owner: 'happner'
     name: 'thompson'
@@ -89,13 +64,6 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 40 00 * * *'
-    artifacts:
-      folder: './artifacts/happn'
-      index: 'artifact_hashes.txt'
-      ipfs:
-        host: '127.0.0.1'
-        port: '5001'
-      upload: true
 
   - owner: 'happner'
     name: 'happner-cluster'
@@ -105,13 +73,6 @@ repos:
       - '0.10'
     job_type: 'performance-tracker-lite'
     schedule: '00 50 00 * * *'
-    artifacts:
-      folder: './artifacts/happner-cluster'
-      index: 'artifact_hashes.txt'
-      ipfs:
-        host: '127.0.0.1'
-        port: '5001'
-      upload: true
 
   #############################
   # protocol documentation jobs
