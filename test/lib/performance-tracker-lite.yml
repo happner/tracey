@@ -13,6 +13,14 @@ github:
     token: '[replaced from env vars]'
     secret: '1234' #our github secret, used for all endpoints
 
+artifacts:
+  folder: './artifacts'
+  index: 'artifact_hashes.txt'
+  ipfs:
+    host: '[replaced_from env vars]'
+    port: '5001'
+  upload: true
+
 repos:
   - owner: 'happner' #owner of repo
     name: 'happn' #name, combined to form the full name tracey/happner
@@ -20,13 +28,6 @@ repos:
       - '7'
     testFolder: './test'
     job_type: 'performance-tracker-lite' #matching defined job type above
-    artifacts:
-      folder: './artifacts/happn'
-      index: 'artifact_hashes.txt'
-      ipfs:
-        host: '[replaced_from env vars]'
-        port: '5001'
-      upload: true
 
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
