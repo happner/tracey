@@ -22,12 +22,58 @@ artifacts:
   upload: true
 
 repos:
+
   - owner: 'happner' #owner of repo
     name: 'happn' #name, combined to form the full name tracey/happner
     node_js:
       - '7'
-    testFolder: './test'
+    testFolder: 'test'
     job_type: 'performance-tracker-lite' #matching defined job type above
+
+  - owner: 'happner'
+    name: 'happner'
+    testFolder: 'test'
+    node_js:
+      - '7'
+      - '0.10'
+    job_type: 'performance-tracker-lite'
+    schedule: '00 05 00 * * *'
+
+  - owner: 'happner'
+    name: 'happner-2'
+    testFolder: 'test'
+    node_js:
+      - '7'
+      - '0.10'
+    job_type: 'performance-tracker-lite'
+    schedule: '00 10 00 * * *'
+
+  - owner: 'happner'
+    name: 'happn-3'
+    testFolder: 'test'
+    node_js:
+      - '7'
+      - '0.10'
+    job_type: 'performance-tracker-lite'
+    schedule: '00 20 00 * * *'
+
+  - owner: 'happner'
+    name: 'happn'
+    testFolder: 'test'
+    node_js:
+      - '7'
+      - '0.10'
+    job_type: 'performance-tracker-lite'
+    schedule: '00 40 00 * * *'
+
+  - owner: 'happner'
+    name: 'happner-cluster'
+    testFolder: 'test/func'
+    node_js:
+      - '7'
+      - '0.10'
+    job_type: 'performance-tracker-lite'
+    schedule: '00 50 00 * * *'
 
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
