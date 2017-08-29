@@ -2,7 +2,7 @@ describe('unit tests', function () {
 
   this.timeout(120000);
 
-  var TestHelper = require('./lib/helper')
+  var TestHelper = require('./../lib/helper')
     , path = require('path')
     , expect = require('expect.js')
     ;
@@ -11,14 +11,14 @@ describe('unit tests', function () {
 
     var projectRoot = path.resolve(__dirname, '..');
 
-    var config = require('../lib/util/parse-config')(projectRoot + path.sep + '.tracey.yml');
+    var config = require('../../lib/util/parse-config')(projectRoot + path.sep + '.tracey.yml');
 
     console.log(config);
 
     var privateConfig;
 
     try{
-      privateConfig = require('../lib/util/parse-config')(projectRoot + path.sep + 'private/config.yml');
+      privateConfig = require('../../lib/util/parse-config')(projectRoot + path.sep + 'private/config.yml');
     }catch(e){}
 
 
@@ -34,18 +34,18 @@ describe('unit tests', function () {
 
     var projectRoot = path.resolve(__dirname, '..');
 
-    var config = require('../lib/util/parse-config')(projectRoot + path.sep + '.tracey.yml');
+    var config = require('../../lib/util/parse-config')(projectRoot + path.sep + '.tracey.yml');
 
     var privateConfig;
 
     try{
-      privateConfig = require('../lib/util/parse-config')(projectRoot + path.sep + 'private/config.yml');
+      privateConfig = require('../../lib/util/parse-config')(projectRoot + path.sep + 'private/config.yml');
     }catch(e){}
 
 
     if (privateConfig) config = require('merge').recursive(config, privateConfig);
 
-    var ServiceManager = require('../lib/services/service');
+    var ServiceManager = require('../../lib/services/service');
 
     var service = new ServiceManager();
 
@@ -60,7 +60,7 @@ describe('unit tests', function () {
 
   it('starts up the queue service, emits a job', function (done) {
     
-    var QueueService = require('../lib/services/queue/service');
+    var QueueService = require('../../lib/services/queue/service');
 
     var queueInstance = new QueueService();
 
@@ -95,7 +95,7 @@ describe('unit tests', function () {
 
   it('tests the runner and the test', function (done) {
 
-    var Runner = require('../lib/job_types/performance_tracker/runner');
+    var Runner = require('../../lib/job_types/performance_tracker/runner');
 
     var testHelper = new TestHelper();
 
@@ -214,7 +214,7 @@ describe('unit tests', function () {
 
   it('starts up the queue service, emits a job', function (done) {
 
-    var QueueService = require('../lib/services/queue/service');
+    var QueueService = require('../../lib/services/queue/service');
 
     var queueInstance = new QueueService();
 
