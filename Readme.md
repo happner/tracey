@@ -5,6 +5,7 @@
   <br>
   <br>
 </h1>
+
 [NB] ALPHA, TRACEY IS NOT 100% RELIABLE YET.
 
 Tracey is a Github webhook framework, based on a configuration file, she is able to create and listen on github webhooks, when she picks up a matching event she downloads the gthub repo and then runs a job based on a configured job_type. A job_type is essentially a plug-in that runs when Tracey picks up a github webhook event.
@@ -15,26 +16,94 @@ Meant to run on a standalone purpose built box, Tracey exposes webhooks to githu
 
 ## High level operation
 
-### thompson does the watching and pushes a job to the file queue
-When a matching event happens on github, and thompson alerts tracey about it, a run-job is enqueued using [file-queue](https://github.com/threez/file-queue) running in concurrency 1 mode
+### adding jobs to the queue
+
+There are 2 possible ways that jobs are started on Tracey:
+
+1. **via Github events**
+   - Thompson receives Githuub events and passes these on to Tracey
+   - When a matching event happens on github, and thompson alerts tracey about it, a run-job is enqueued using [file-queue](https://github.com/threez/file-queue) running in concurrency 1 mode. 
+2. **via a cron-like schedule**
+   - A schedule can be set up in the Tracey configuration file (see below) for each job
+   - A job can only have one time slot per 24 hour period in which to run
+   - When a schedule is triggered, a job is placed into the queue
 
 ### job is popped from the file-queue
-when the queued job is popped transactionally, it is assigned a test-run-id in the format [utc]_[guid], a test folder is created in the format ./tracey_job_folder/owner/repo/[test run id], the job is assigned its folder and is passed to the test runner.
+When the queued job is popped transactionally, it is assigned a test-run-id in the format [utc]_[guid], a test folder is created in the format ./tracey_job_folder/owner/repo/[test run id], the job is assigned its folder and is passed to the test runner.
 
 ### repo cloned
-the repository is cloned to a folder for the job, named as follows: [tracey_job_folder]/[repo owner]/[repo name]/[job id in format utc_guid]
+The repository is cloned to a folder for the job, named as follows: [tracey_job_folder]/[repo owner]/[repo name]/[job id in format utc_guid]
 
 ### job_type plugin is initialised
-the plugin matching the configured job type is passed the job details (job folder containing the repo, with settings)
+The plugin matching the configured job type is passed the job details (job folder containing the repo, with settings)
 
 ### job_type plugin runs
-the plugin runs, and the results are passed back to the job, tracey then commits the job
+The plugin runs, and the results are passed back to the job, tracey then commits the job.
 
 ### one at a time
 It is by design that the system only runs 1 test at a time, so that there is as little concurrent noise as possible - which should give reasonably stable average metrics for test run times.
 
 ### not a module, tracey is a service
 Tracey is not designed to be a module, but is rather a fully fledged service that manages the benchmarking of your tests in a controlled environment.
+
+
+## Job dependencies
+
+Each job repo requires it's own set of dependencies, which are usually installed via an automated ```npm install``` step when each job is run. However, if Tracey is run on a device with restricted memory, the ```npm install``` step may cause Tracey or even the device to crash. 
+
+A different approach is taken on low-memory devices to alleviate this:
+
+- Primary test server (running a Tracey job) runs any required `npm install` steps, and then creates a tarball of the repo's **node_modules** folder
+- The tarball is then uploaded to an [IPFS (Inter-Planetary FileSystem)](ipfs.io) instance
+- A secondary (memory-restricted) device (also running Tracey) downloads the required tarball from IPFS when a job is started
+- The tarball is uncompressed into the **node_modules** folder for the job repo
+- Tracey runs the job as usual
+
+
+
+The following diagrams describe this process in more detail:
+
+![tracey on test server](https://user-images.githubusercontent.com/9947358/29820426-b7fc1272-8cc4-11e7-9056-76be8812f6fa.png)
+
+![tracey on field device](https://user-images.githubusercontent.com/9947358/29820427-b7fc1632-8cc4-11e7-982b-9f1313566b48.png)
+
+### configuring artifact generation
+
+The following snippets of the Tracey configuration file illustrates enabling artifact generation:
+
+```yaml
+# PRIMARY SERVER running Tracey - generates artifacts....
+...
+artifacts:						# the presence of this will enable the use of artifacts
+  folder: './artifacts'			# where to temporarily store artifacts
+  index: 'artifact_hashes.txt'	# the file in each repo that maintains a list of hashes
+  ipfs:
+    host: '192.168.0.4'			# the IPFS instance host
+    port: '5001'				# the IPFS instance port
+  upload: true					# if true, artifacts will be generated & uploaded to IPFS
+...
+```
+
+```yaml
+# SECONDARY DEVICE running Tracey with minimum memory...
+...
+artifacts:
+  folder: './artifacts'
+  index: 'artifact_hashes.txt'
+  ipfs:
+    host: '192.168.0.4'
+    port: '5001'
+  upload: false					# false - artifacts not generated or uploaded
+...
+```
+
+
+
+### caveats
+
+Repos that require a C++ compilation step are not supported using this process. In future, a cross-compilation step could be introduced during artifact generation for specific platforms.
+
+
 
 JOB TYPES:
 ----------
