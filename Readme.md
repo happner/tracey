@@ -74,13 +74,13 @@ The following snippets of the Tracey configuration file illustrates enabling art
 ```yaml
 # PRIMARY SERVER running Tracey - generates artifacts....
 ...
-artifacts:						# the presence of this will enable the use of artifacts
+artifacts:						      # the presence of this will enable the use of artifacts
   folder: './artifacts'			# where to temporarily store artifacts
   index: 'artifact_hashes.txt'	# the file in each repo that maintains a list of hashes
   ipfs:
     host: '192.168.0.4'			# the IPFS instance host
-    port: '5001'				# the IPFS instance port
-  upload: true					# if true, artifacts will be generated & uploaded to IPFS
+    port: '5001'				    # the IPFS instance port
+  upload: true					    # if true, artifacts will be generated & uploaded to IPFS
 ...
 ```
 
@@ -93,7 +93,7 @@ artifacts:
   ipfs:
     host: '192.168.0.4'
     port: '5001'
-  upload: false					# false - artifacts not generated or uploaded
+  upload: false					    # false - artifacts not generated or uploaded
 ...
 ```
 
