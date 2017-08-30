@@ -74,13 +74,13 @@ The following snippets of the Tracey configuration file illustrates enabling art
 ```yaml
 # PRIMARY SERVER running Tracey - generates artifacts....
 ...
-artifacts:						# the presence of this will enable the use of artifacts
-  folder: './artifacts'			# where to temporarily store artifacts
+artifacts:	# the presence of this will enable the use of artifacts
+  folder: './artifacts'	# where to temporarily store artifacts
   index: 'artifact_hashes.txt'	# the file in each repo that maintains a list of hashes
   ipfs:
-    host: '192.168.0.4'			# the IPFS instance host
-    port: '5001'				# the IPFS instance port
-  upload: true					# if true, artifacts will be generated & uploaded to IPFS
+    host: '192.168.0.4'	# the IPFS instance host
+    port: '5001'	# the IPFS instance port
+  upload: true	# if true, artifacts will be generated & uploaded to IPFS
 ...
 ```
 
@@ -93,7 +93,7 @@ artifacts:
   ipfs:
     host: '192.168.0.4'
     port: '5001'
-  upload: false					# false - artifacts not generated or uploaded
+  upload: false	# false - artifacts not generated or uploaded
 ...
 ```
 
@@ -108,7 +108,21 @@ Repos that require a C++ compilation step are not supported using this process. 
 JOB TYPES:
 ----------
 
-## performance tracker:
+
+
+There are a number of job types that can be configured for Tracey:
+
+- **Built in:**
+  - performance-tracker
+- **External** ([tracey-job-modules](https://github.com/team-tenacious/tracey-job-modules)):
+  - performance-tracker-lite
+  - happn-protocol
+  - happner-protocol
+
+
+
+## 1.1 performance tracker:
+
 *this is an internal module, and can be found in [/lib/job_types]()*
 
 The performance_tracker injects a special test runner into the repo, [happner-serial-mocha](https://github.com/happner/happner-serial-mocha) is injected into the cloned app's dependancies, and then the [tracey-test-runner](https://github.com/happner/tracey/blob/master/tracey-test-runner.js) script is pushed to the cloned root, the test runner will run all the tests in the repos test folder by default, or it can be configured to run certain tests. Each test suite is loaded into its own process and is run separately. Only 1 test suite is run at a time, and tracey only runs 1 job at a time - thus the performance tracker can collect metrics about test durations that are fairly uncluttered by other things occuring in parallel. Special thanks to [Vadim Demedes](https://github.com/vdemedes) - as we based this job_type on [Trevor](https://github.com/vadimdemedes/trevor).
@@ -119,6 +133,26 @@ A docker instance containing the repo, with the modified dependancies and tracey
 
 ### benchmark metrics are pushed to a test-metrics server
 its metrics, with its suite and context will be pushed to a database via [test-metrics](https://github.com/happner/test-metrics) for further scrutiny.
+
+
+
+## 2.1 performance-tracker-lite
+
+This module replicates the behaviour of performance-tracker, but with the important distinction of **not using Docker**. This is intended for use on low-memory devices where Docker cannot be run.
+
+
+
+## 2.2 happn-protocol
+
+This module in turn uses the [happn-protocol](https://github.com/happner/happn-protocol) module to generate documentation for happn.
+
+
+
+## 2.3 happner-protocol
+
+This module in turn uses the [happner-protocol](https://github.com/happner/happner-protocol) module to generate documentation for happner.
+
+
 
 
 ## Security considerations
@@ -146,6 +180,14 @@ github:
   token: #no token here - this is a public
   secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
 
+artifacts:
+  folder: './artifacts'
+  index: 'artifact_hashes.txt'
+  ipfs:
+    host: '192.168.0.4'
+    port: '5001'
+  upload: true	
+  
 repos:
   - owner: 'happner' #owner of repo
     name: 'tracey' #name, combined to form the full name tracey/happner
@@ -161,7 +203,8 @@ repos:
     node_js:
       - '7'
       - '0.10'
-    job_type: 'performance_tracker'
+    job_type: 'performance-tracker-lite'
+    schedule: '00 00 00 * * *'  # seconds|minute|hour|day of month|month|day of week
 job:
   folder: './tracey_job_folder' #where our jobs go to, in relation to index.js
 
@@ -267,7 +310,7 @@ node index.js -r happner/tracey
 
 ## TODO
 
-- create a non-docker version of the runner for ARM devices
+- ~~create a non-docker version of the runner for ARM devices~~
 - issue with permissions on git clone, can only run the service as sudo?
 - have token ENV variables check on startup TRACEY_TOKEN
 - have job folder in structure tracey_job_folder/[owner]/[repo]/[branch]/[run_id]
