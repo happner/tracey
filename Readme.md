@@ -177,9 +177,12 @@ job_types:
       password: '[password]'
 
 github:
-  token: #no token here - this is a public
-  secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
-
+  user:
+    name: 'my-github-agent'
+    email: 'my-github-agent@mycompany.org'
+    token: '34fc1918f5bxxxxxxxxxxxxxxxxxxxxx'
+    secret: 'YYTAAG4562fDSsa' #our github secret, used for all endpoints
+    
 artifacts:
   folder: './artifacts'
   index: 'artifact_hashes.txt'
@@ -295,7 +298,6 @@ pm2 logs 0
 0|index    | listening for event(s) on url [object Object]
 0|index    | started service: github
 0|index    | tracey up and running..
-
 ```
 
 ## GOTCHAS
