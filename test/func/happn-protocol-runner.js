@@ -31,39 +31,45 @@ describe('func - happn-protocol job-runner', function () {
 
         context('start', function () {
 
-            it('webhook successfully receives a Github push event and adds it to the queue', function (done) {
-
-                var self = this;
-
-                var mockMessage = {
-                    event: "push",
-                    name: "happn-protocol",
-                    owner: "happner",
-                    branch: "master",
-                    detail: ""
-                };
-
-                try {
-                    this.__serviceManager.start(this.__config);
-
-                    setTimeout(function () {
-
-                        // shortcut the event by invoking the handler directly
-                        self.__serviceManager.services['github'].__handleGithubEvent(mockMessage);
-
-                        setTimeout(function () {
-                            done();
-                        }, 900000);
-
-                    }, 5000)
-                } catch (e) {
-                    return done(e);
-                }
-            });
+            //it('webhook successfully receives a Github push event and adds it to the queue', function (done) {
+            //
+            //    var self = this;
+            //
+            //    var mockMessage = {
+            //        event: "push",
+            //        name: "happn-protocol",
+            //        owner: "happner",
+            //        branch: "master",
+            //        detail: ""
+            //    };
+            //
+            //    try {
+            //        this.__serviceManager.start(this.__config);
+            //
+            //        setTimeout(function () {
+            //
+            //            // shortcut the event by invoking the handler directly
+            //            self.__serviceManager.services['github'].__handleGithubEvent(mockMessage);
+            //
+            //            setTimeout(function () {
+            //                done();
+            //            }, 900000);
+            //
+            //        }, 5000)
+            //    } catch (e) {
+            //        return done(e);
+            //    }
+            //});
 
             it('schedule successfully creates happn-protocol job adds it to the queue', function (done) {
 
                 var self = this;
+
+                this.__serviceManager.on('started', function () {
+                    self.__serviceManager.services.job.setJobCompletedHandler(function () {
+                        done();
+                    });
+                });
 
                 self.__config.repos[0].schedule = moment().add(20, 'seconds').format('ss mm HH') + ' * * *';
 
